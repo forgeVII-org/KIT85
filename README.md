@@ -130,6 +130,12 @@ lib/
 
 <br>
 
+## Screenshots
+
+> Coming soon
+
+<br>
+
 ## Changelog
 
 ### v1.0.0
@@ -150,5 +156,5 @@ This project is for educational use.
 ---
 
 <div align="center">
-  Made by <a href="https://github.com/forgeVII">forgeVII</a>
+  Made by <a href="https://github.com/forgeVII">prcnull</a>
 </div>
