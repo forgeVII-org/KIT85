@@ -132,7 +132,13 @@ lib/
 
 ## Screenshots
 
-![Kit View](screenshots/kit_view.png)
+<p float="left">
+  <img src="kit view.jpg" width="200"/>
+  <img src="asm view.jpg" width="200"/>
+  <img src="menu view.jpg" width="200"/>
+  <img src="number converter.jpg" width="200"/>
+  <img src="opcode.jpg" width="200"/>
+</p>
 
 <br>
 
