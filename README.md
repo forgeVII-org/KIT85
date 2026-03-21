@@ -130,11 +130,7 @@ lib/
 
 <br>
 
-## Screenshots
 
-> Coming soon
-
-<br>
 
 ## Changelog
 
