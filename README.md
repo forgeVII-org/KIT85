@@ -144,8 +144,10 @@ lib/
 
 ## License
 
-This project is for educational use.  
-© 2026 forgeVII — All rights reserved.
+Copyright (C) 2026 forgeVII
+
+This project is licensed under the GNU General Public License v3.0.  
+See [LICENSE](LICENSE) for details.
 
 <br>
 
