@@ -150,5 +150,5 @@ This project is for educational use.
 ---
 
 <div align="center">
-  Made by <a href="https://github.com/forgeVII">prcnull</a>
+  Made by <a href="https://github.com/forgeVII">forgeVII</a>
 </div>
