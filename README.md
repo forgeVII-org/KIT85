@@ -143,7 +143,7 @@ lib/
 ## License
 
 This project is for educational use.  
-© 2026 prcnull — All rights reserved.
+© 2026 forgeVII — All rights reserved.
 
 <br>
 
