@@ -130,18 +130,6 @@ lib/
 
 <br>
 
-## Screenshots
-
-<p float="left">
-  <img src="kit view.jpg" width="200"/>
-  <img src="asm view.jpg" width="200"/>
-  <img src="menu view.jpg" width="200"/>
-  <img src="number converter.jpg" width="200"/>
-  <img src="opcode.jpg" width="200"/>
-</p>
-
-<br>
-
 ## Changelog
 
 ### v1.0.0
