@@ -28,32 +28,3 @@ A full 8085 microprocessor kit simulator for Android.
 
 ## Developer
 Made by [prcnull](https://github.com/forgeVII)
-```
-
----
-
-**Step 2 — Add topics to your repo**
-
-On your repo page, click the gear ⚙️ icon next to **About** and add these topics:
-```
-8085 flutter android emulator microprocessor simulator assembly
-```
-
-This helps people find it on Google and GitHub search.
-
----
-
-**Step 3 — Your GitHub profile**
-
-Go to `github.com/forgeVII` and click **Edit profile**:
-- **Name:** prcnull
-- **Bio:** Builder. Electronics, embedded systems, aviation tech.
-- **Location:** India
-
----
-
-**Step 4 — Tell people about it**
-
-Share this link:
-```
-https://github.com/forgeVII/KIT85/releases/latest
