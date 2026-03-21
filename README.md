@@ -112,7 +112,7 @@ For assembler:
 | External dependencies | None |
 | Min Android | 6.0 (API 23) |
 | Architecture | ARM64 |
-| Package | com.prcnull.kit85 |
+| Package | com.forgevii.kit85 |
 
 <br>
 
