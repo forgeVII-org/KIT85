@@ -132,7 +132,7 @@ lib/
 
 ## Screenshots
 
-> Coming soon
+![Kit View](screenshots/kit_view.png)
 
 <br>
 
