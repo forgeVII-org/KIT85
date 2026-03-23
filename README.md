@@ -133,3 +133,17 @@ under GPL-compatible terms.
 
 Use .github/RELEASE_TEMPLATE.md when publishing each tagged release.
 
+## Student Discovery (Google + Web)
+
+A search-optimized landing page is available in `docs/` for GitHub Pages.
+
+Enable it:
+
+1. GitHub -> Settings -> Pages
+2. Source: Deploy from a branch
+3. Branch: `main` / Folder: `/docs`
+
+After publishing, your landing URL will be:
+
+`https://forgevii-org.github.io/KIT85/`
+

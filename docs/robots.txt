@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://forgevii-org.github.io/KIT85/sitemap.xml
