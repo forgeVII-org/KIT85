@@ -1,4 +1,5 @@
 import java.util.Properties
+import org.gradle.api.GradleException
 
 plugins {
     id("com.android.application")
@@ -18,6 +19,12 @@ val hasReleaseKeystore =
         keystoreProperties.getProperty("storePassword") != null &&
         keystoreProperties.getProperty("keyAlias") != null &&
         keystoreProperties.getProperty("keyPassword") != null
+
+val isReleaseTaskRequested =
+    gradle.startParameter.taskNames.any { taskName ->
+        taskName.contains("release", ignoreCase = true) ||
+            taskName.contains("bundle", ignoreCase = true)
+    }
 
 android {
     namespace = "com.forgevii.kit85"
@@ -57,11 +64,17 @@ android {
 
     buildTypes {
         release {
-            // Uses configured release keystore when available.
-            // Falls back to debug signing if key.properties is missing or incomplete.
-            signingConfig =
-                if (hasReleaseKeystore) signingConfigs.getByName("release")
-                else signingConfigs.getByName("debug")
+            // Production releases must never be signed by the debug key.
+            if (hasReleaseKeystore) {
+                signingConfig = signingConfigs.getByName("release")
+            } else if (isReleaseTaskRequested) {
+                throw GradleException(
+                    "Missing release signing config. Create android/key.properties with a real keystore before building release artifacts.",
+                )
+            } else {
+                // Keeps IDE sync and non-release tasks working without local signing secrets.
+                signingConfig = signingConfigs.getByName("debug")
+            }
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(

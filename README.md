@@ -1,61 +1,34 @@
-# KIT85
+# kit85
 
-KIT85 is a modern Flutter-based 8085 microprocessor simulator built for students, hobbyists, and educators.
+A Flutter-based 8085 microprocessor simulator.
 
-It aims to provide a clean, practical environment to experiment with 8085 workflows while keeping the app lightweight and easy to run.
+## Getting Started
 
-## Why KIT85
+This project is a starting point for a Flutter application.
 
-- Student-friendly interface for 8085 practice
-- Fast startup and responsive controls
-- Cross-platform Flutter codebase
-- Open source and free to use
+A few resources to get you started if this is your first Flutter project:
 
-## Features
+- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
+- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
 
-- 8085 simulator core and assembler workflow
-- Ready-to-use sample programs
-- Opcode reference and converter utilities
-- Retro-inspired UI tuned for readability
-- In-app update check for new releases
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
 
-## Tech Stack
+## Android release signing
 
-- Flutter (Dart)
-- Android, iOS, Web, Desktop targets
+Release signing is configured in `android/app/build.gradle.kts` to use
+`android/key.properties` when present.
 
-## Quick Start
+If `android/key.properties` is missing or incomplete, release builds fail by
+design to prevent accidental debug-signed production artifacts.
 
-### Prerequisites
-
-- Flutter SDK (stable)
-- Dart SDK (bundled with Flutter)
-
-### Run locally
-
-```bash
-flutter pub get
-flutter analyze
-flutter run
-```
-
-## Build Release APKs (Recommended)
-
-The project is configured for a hardened and size-optimized Android release flow.
-
-```bash
-flutter build apk --release --split-per-abi --obfuscate --split-debug-info=build/debug-info --tree-shake-icons
-```
-
-Output APKs are generated in `build/app/outputs/flutter-apk/`.
-
-## Android Signing Setup
-
-Release signing is configured in `android/app/build.gradle.kts` and reads credentials from `android/key.properties`.
+### Setup steps
 
 1. Create or place your keystore file (example: `android/upload-keystore.jks`).
 2. Copy `android/key.properties.example` to `android/key.properties`.
-3. Fill values:
+3. Fill `android/key.properties` with your actual values:
 
 ```properties
 storePassword=YOUR_STORE_PASSWORD
@@ -67,48 +40,96 @@ storeFile=../upload-keystore.jks
 Notes:
 
 - `storeFile` is resolved from the `android/app` module directory.
-- `android/.gitignore` excludes keystore material and `key.properties`.
+- `android/.gitignore` already excludes `key.properties` and keystore files.
 
-## Versioning
+### Build commands
 
-Update both before release:
+```bash
+flutter analyze
+flutter build apk --release --split-per-abi --obfuscate --split-debug-info=build/debug-info --tree-shake-icons
+```
 
-- `pubspec.yaml` -> `version:`
-- `lib/constants.dart` -> `kAppVersion`
+### One-click production release (arm64 only)
 
-## Release Checklist
+For modern Android phones and smallest distribution size:
 
-1. Update app version.
-2. Ensure signing config is valid.
-3. Run checks:
+```powershell
+powershell -ExecutionPolicy Bypass -File tools/release-android-arm64.ps1
+```
+
+This script runs analysis, builds a hardened arm64 release APK, and prints
+artifact size and path.
+
+## Release checklist
+
+Use this list before cutting a public release.
+
+Detailed checklist file:
+
+- RELEASE_CHECKLIST.md
+
+1. Update versions in both places:
+	- `pubspec.yaml` -> `version:`
+	- `lib/constants.dart` -> `kAppVersion`
+2. Ensure `android/key.properties` exists with real signing values.
+3. Run quality checks:
 
 ```bash
 flutter analyze
 flutter test
 ```
 
-4. Build release artifacts.
-5. Smoke-test on a physical device.
-6. Upload APKs and symbol files with release notes.
+4. Build hardened release APKs (smaller per-device files):
 
-## Repository Standards
+```bash
+flutter build apk --release --split-per-abi --obfuscate --split-debug-info=build/debug-info --tree-shake-icons
+```
 
-- License: MIT (`LICENSE`)
-- Contribution guide: `CONTRIBUTING.md`
-- Code of conduct: `CODE_OF_CONDUCT.md`
-- Changelog: `CHANGELOG.md`
+Alternative for smallest single Android artifact (arm64 only):
 
-## Roadmap
+```bash
+flutter build apk --release --target-platform android-arm64 --obfuscate --split-debug-info=build/debug-info --tree-shake-icons
+```
 
-- More teaching-oriented sample programs
-- Better diagnostics and error explanations
-- Additional emulator quality-of-life tools
+5. Smoke-test on device:
+	- Launch app and confirm splash -> kit flow.
+	- Open all bottom sheets and check no status/nav-bar clipping.
+	- Rotate to landscape and verify layout remains usable.
+	- Trigger update check and confirm DOWNLOAD opens:
+	  `https://github.com/forgeVII-org/KIT85/releases`
 
-## Maintainer
+6. Archive outputs:
+	- APKs from `build/app/outputs/flutter-apk/`
+	- Symbols from `build/debug-info/`
 
-- Organization: `forgeVII-org`
-- Repository: `KIT85`
+## Security and anti-theft notes
 
-## Acknowledgements
+No APK can be made impossible to copy or reverse engineer. This project already
+uses practical hardening for Android release builds:
 
-Built with Flutter and made open for the student community.
+- R8 code shrinking/optimization (`isMinifyEnabled = true`)
+- Resource shrinking (`isShrinkResources = true`)
+- Dart obfuscation (`--obfuscate --split-debug-info=...`)
+- Split APKs per ABI (`--split-per-abi`) to reduce distributed size
+
+For open-source distribution, treat code transparency as expected and focus on:
+
+- Strong release signing key hygiene (never commit keystore or key.properties)
+- Publishing only signed release APKs
+- Keeping `build/debug-info/` private for crash symbolization
+- Verifying APK signature before upload (`apksigner verify --print-certs <apk>`)
+
+## License
+
+This project is licensed under GNU GPL v3.0.
+
+- Full text: `LICENSE`
+- SPDX identifier: `GPL-3.0-only`
+
+GPLv3 requires derivative works that are distributed to also provide source
+under GPL-compatible terms.
+
+## GitHub Release Notes Template
+
+Use .github/RELEASE_TEMPLATE.md when publishing each tagged release.
+
