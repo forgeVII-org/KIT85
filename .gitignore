@@ -43,3 +43,11 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Signing keys - NEVER commit!
+kit85-release-key.jks
+android/key.properties
+
+# Build artifacts
+build/
+debug-info/
