@@ -3,7 +3,7 @@
 # Path is relative to android/app (the Gradle module using this file).
 # Use a dedicated production upload key and store the keystore securely.
 
-storePassword=YOUR_STORE_PASSWORD
-keyPassword=YOUR_KEY_PASSWORD
-keyAlias=upload
-storeFile=../upload-keystore.jks
+storeFile=../../kit85-release-key.jks
+storePassword=4j6w8p1a
+keyAlias=kit85
+keyPassword=4j6w8p1a
