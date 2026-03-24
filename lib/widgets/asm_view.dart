@@ -981,7 +981,8 @@ class _AsmViewState extends State<AsmView> {
         constraints: const BoxConstraints(minHeight: 44),
         decoration: BoxDecoration(
           color: kSurface,
-          border: Border(top: BorderSide(color: kBorder.withValues(alpha: 0.8))),
+          border:
+              Border(top: BorderSide(color: kBorder.withValues(alpha: 0.8))),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         child: Wrap(
