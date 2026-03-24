@@ -186,8 +186,12 @@ List<TextSpan> _buildAsmLineSpans(String line, TextStyle baseStyle) {
 
 class AsmView extends StatefulWidget {
   final KitScreenState state;
-  final bool isLandscape;
-  const AsmView({super.key, required this.state, required this.isLandscape});
+  final bool isWideLayout;
+  const AsmView({
+    super.key,
+    required this.state,
+    required this.isWideLayout,
+  });
   @override
   State<AsmView> createState() => _AsmViewState();
 }
@@ -761,7 +765,7 @@ class _AsmViewState extends State<AsmView> {
             Container(width: 1, color: kBorder),
             // editor
             Expanded(
-                flex: widget.isLandscape ? 6 : 5,
+              flex: widget.isWideLayout ? 6 : 5,
                 child: Container(
                   color: kSurface,
                   child: TextField(
@@ -808,7 +812,8 @@ class _AsmViewState extends State<AsmView> {
             Container(width: 1, color: kBorder),
             // hex output + highlighted preview
             Expanded(
-                flex: widget.isLandscape ? 4 : 4, child: _buildOutputPanel(s)),
+              flex: widget.isWideLayout ? 4 : 4,
+              child: _buildOutputPanel(s)),
           ])),
           _buildRegBar(s),
         ]));

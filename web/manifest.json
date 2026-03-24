@@ -1,12 +1,12 @@
 {
-    "name": "kit85",
-    "short_name": "kit85",
+    "name": "KIT85 - 8085 Simulator",
+    "short_name": "KIT85",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
-    "orientation": "portrait-primary",
+    "background_color": "#0D1419",
+    "theme_color": "#0D1419",
+    "description": "KIT85 web edition for learning and testing 8085 assembly in the browser.",
+    "orientation": "any",
     "prefer_related_applications": false,
     "icons": [
         {

@@ -1,0 +1,35 @@
+{
+    "name": "KIT85 - 8085 Simulator",
+    "short_name": "KIT85",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#0D1419",
+    "theme_color": "#0D1419",
+    "description": "KIT85 web edition for learning and testing 8085 assembly in the browser.",
+    "orientation": "any",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "icons/Icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-maskable-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icons/Icon-maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}

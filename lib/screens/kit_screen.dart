@@ -44,6 +44,7 @@ class KitScreenState extends State<KitScreen> {
   List<AsmLine> asmLines = [];
   String asmError = '';
   int asmOrigin = 0x2000;
+  final Set<int> asmInstrStarts = <int>{};
 
   List<Map<String, dynamic>> disasmCache = [];
   int lastDisasmAddr = -1;
@@ -670,6 +671,15 @@ class KitScreenState extends State<KitScreen> {
     return true;
   }
 
+  void _refreshAsmInstrStarts(List<AsmLine> lines) {
+    asmInstrStarts
+      ..clear()
+      ..addAll(lines
+          .where((l) =>
+              l.address != null && l.mnemonic != null && l.bytes.isNotEmpty)
+          .map((l) => l.address! & 0xFFFF));
+  }
+
   void asmLoad() => setState(() {
         asmError = '';
         if (!validateAsmSourceLineLimit()) {
@@ -683,6 +693,7 @@ class KitScreenState extends State<KitScreen> {
         asmLines = asmEngine.assemble(lines, origin);
         final errs = asmLines.where((l) => l.error != null).toList();
         if (errs.isNotEmpty) {
+          asmInstrStarts.clear();
           asmError = errs.map((l) => '${l.mnemonic}: ${l.error}').join(', ');
           _hHeavy();
           status = 'ASM ERR';
@@ -700,6 +711,7 @@ class KitScreenState extends State<KitScreen> {
             }
           }
         }
+        _refreshAsmInstrStarts(asmLines);
         addrBuf = origin;
         status = 'LOADED';
         invalidateDisasm();
@@ -726,6 +738,7 @@ class KitScreenState extends State<KitScreen> {
           }
         }
       }
+      _refreshAsmInstrStarts(asmLines);
       cpu.reset();
       addrBuf = origin;
       dataBuf = cpu.mem[origin];
@@ -921,48 +934,111 @@ class KitScreenState extends State<KitScreen> {
     return mn[op] ?? '';
   }
 
+  int _opSize(int op) => th.contains(op)
+      ? 3
+      : tw.contains(op)
+          ? 2
+          : 1;
+
+  int _entrySizeAt(int addr) {
+    final op = cpu.mem[addr & 0xFFFF];
+    if (asmInstrStarts.isNotEmpty && !asmInstrStarts.contains(addr & 0xFFFF)) {
+      return 1;
+    }
+    return _opSize(op);
+  }
+
+  int _entryStartForAnchor(int anchor) {
+    final a = anchor & 0xFFFF;
+    if (asmInstrStarts.isEmpty) return a;
+    if (asmInstrStarts.contains(a)) return a;
+    for (int back = 1; back <= 2; back++) {
+      final cand = (a - back) & 0xFFFF;
+      if (!asmInstrStarts.contains(cand)) continue;
+      if (cand + _entrySizeAt(cand) > a) return cand;
+    }
+    return a;
+  }
+
+  int _prevEntryStart(int entryStart) {
+    final s = entryStart & 0xFFFF;
+    if (asmInstrStarts.isEmpty) {
+      final prev = (s - 1).clamp(0, 0xFFFF);
+      return prev;
+    }
+    for (int back = 3; back >= 1; back--) {
+      final cand = s - back;
+      if (cand < 0) continue;
+      if (!asmInstrStarts.contains(cand)) continue;
+      if (cand + _entrySizeAt(cand) == s) return cand;
+    }
+    return (s - 1).clamp(0, 0xFFFF);
+  }
+
+  Map<String, dynamic> _disasmEntry(int addr) {
+    final a = addr & 0xFFFF;
+    final op = cpu.mem[a];
+    final isKnownCode = asmInstrStarts.isNotEmpty && asmInstrStarts.contains(a);
+    final canDecodeAsCode = asmInstrStarts.isEmpty || isKnownCode;
+    final raw = canDecodeAsCode ? disasmOp(op) : '';
+
+    String line;
+    int sz = 1;
+    if (canDecodeAsCode && th.contains(op)) {
+      final lo = cpu.mem[(a + 1) & 0xFFFF], hi = cpu.mem[(a + 2) & 0xFFFF];
+      line =
+          '${raw.isEmpty ? '???' : raw}  ${((hi << 8) | lo).toRadixString(16).toUpperCase().padLeft(4, '0')}H';
+      sz = 3;
+    } else if (canDecodeAsCode && tw.contains(op)) {
+      line =
+          '${raw.isEmpty ? '???' : raw}  ${cpu.mem[(a + 1) & 0xFFFF].toRadixString(16).toUpperCase().padLeft(2, '0')}H';
+      sz = 2;
+    } else if (raw.isEmpty) {
+      line = '${op.toRadixString(16).toUpperCase().padLeft(2, '0')}H (DATA)';
+    } else {
+      line = raw;
+    }
+    return {'addr': a, 'line': line, 'size': sz};
+  }
+
   List<Map<String, dynamic>> _disasm(int anchor, int before, int after) {
-    final scanStart = (anchor - 60).clamp(0, 0xFFFF);
-    final addrs = <int>[];
-    int a = scanStart;
-    while (a <= anchor) {
-      addrs.add(a);
-      final op = cpu.mem[a];
-      a += th.contains(op)
-          ? 3
-          : tw.contains(op)
-              ? 2
-              : 1;
+    if (asmInstrStarts.isEmpty) {
+      final scanStart = (anchor - 60).clamp(0, 0xFFFF);
+      final addrs = <int>[];
+      int a = scanStart;
+      while (a <= anchor) {
+        addrs.add(a);
+        a += _entrySizeAt(a);
+      }
+      final ba = <int>[];
+      for (int i = addrs.length - 1; i >= 0 && ba.length < before; i--) {
+        ba.insert(0, addrs[i]);
+      }
+      final from = ba.isNotEmpty ? ba.first : anchor;
+      final out = <Map<String, dynamic>>[];
+      int cur = from;
+      while (out.length < before + 1 + after && cur < 0x10000) {
+        final entry = _disasmEntry(cur);
+        out.add(entry);
+        cur += (entry['size'] as int);
+      }
+      return out;
     }
-    final ba = <int>[];
-    for (int i = addrs.length - 1; i >= 0 && ba.length < before; i--) {
-      ba.insert(0, addrs[i]);
+
+    final normAnchor = _entryStartForAnchor(anchor);
+    int from = normAnchor;
+    for (int i = 0; i < before; i++) {
+      final prev = _prevEntryStart(from);
+      if (prev == from) break;
+      from = prev;
     }
-    final from = ba.isNotEmpty ? ba.first : anchor;
+
     final out = <Map<String, dynamic>>[];
     int cur = from;
     while (out.length < before + 1 + after && cur < 0x10000) {
-      final op = cpu.mem[cur];
-      final raw = disasmOp(op);
-      String line;
-      int sz = 1;
-      if (th.contains(op)) {
-        final lo = cpu.mem[(cur + 1) & 0xFFFF],
-            hi = cpu.mem[(cur + 2) & 0xFFFF];
-        line =
-            '${raw.isEmpty ? '???' : raw}  ${((hi << 8) | lo).toRadixString(16).toUpperCase().padLeft(4, '0')}H';
-        sz = 3;
-      } else if (tw.contains(op)) {
-        line =
-            '${raw.isEmpty ? '???' : raw}  ${cpu.mem[(cur + 1) & 0xFFFF].toRadixString(16).toUpperCase().padLeft(2, '0')}H';
-        sz = 2;
-      } else if (raw.isEmpty) {
-        line = '${op.toRadixString(16).toUpperCase().padLeft(2, '0')}H (DATA)';
-      } else {
-        line = raw;
-      }
-      out.add({'addr': cur, 'line': line});
-      cur += sz;
+      final entry = _disasmEntry(cur);
+      out.add(entry);
+      cur += (entry['size'] as int);
     }
     return out;
   }
@@ -980,8 +1056,8 @@ class KitScreenState extends State<KitScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isLandscape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final isWideLayout = screenWidth >= 980;
     return Scaffold(
       backgroundColor: kBg,
       resizeToAvoidBottomInset: false,
@@ -1077,19 +1153,18 @@ class KitScreenState extends State<KitScreen> {
       ),
       body: SafeArea(
         child: asmMode
-            ? AsmView(state: this, isLandscape: isLandscape)
-            : _buildKitView(isLandscape),
+            ? AsmView(state: this, isWideLayout: isWideLayout)
+            : _buildKitView(isWideLayout, screenWidth),
       ),
     );
   }
 
   // ── kit view ──────────────────────────────────────────────────────────────
-  Widget _buildKitView(bool isLandscape) {
-    if (isLandscape) {
+  Widget _buildKitView(bool isWideLayout, double screenWidth) {
+    if (isWideLayout) {
+      final disasmWidth = (screenWidth * 0.34).clamp(300.0, 460.0).toDouble();
       return Row(children: [
-        SizedBox(
-            width: MediaQuery.of(context).size.width * 0.35,
-            child: DisasmPanel(state: this)),
+        SizedBox(width: disasmWidth, child: DisasmPanel(state: this)),
         Expanded(
             child: Column(children: [
           HexDisplay(state: this),

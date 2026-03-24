@@ -27,12 +27,7 @@ class _DisasmPanelState extends State<DisasmPanel> {
     int hlIdx = 0;
     for (int i = 0; i < lines.length; i++) {
       final a = lines[i]['addr'] as int;
-      final op = s.cpu.mem[a];
-      final sz = KitScreenState.th.contains(op)
-          ? 3
-          : KitScreenState.tw.contains(op)
-              ? 2
-              : 1;
+      final sz = (lines[i]['size'] as int?) ?? 1;
       if (s.addrBuf >= a && s.addrBuf < a + sz) {
         hlAddr = a;
         hlIdx = i;
@@ -130,9 +125,9 @@ class DisasmToggle extends StatelessWidget {
                     fontFamily: kMono)),
             const SizedBox(width: 8),
             Expanded(
-                child: Text('⚠ data bytes may misread as opcodes',
+                child: Text('ASM-guided decode active',
                     style: TextStyle(
-                        color: kOrange.withValues(alpha: 0.5),
+                        color: kGreen.withValues(alpha: 0.65),
                         fontSize: 9,
                         fontFamily: kMono),
                     overflow: TextOverflow.ellipsis)),

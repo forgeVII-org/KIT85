@@ -118,11 +118,21 @@ class Assembler8085 {
   int _v(String s, Map<String, int> labels) {
     s = s.toUpperCase().replaceAll(' ', '');
     if (labels.containsKey(s)) return labels[s]!;
+    if (s.endsWith('D')) {
+      return int.tryParse(s.substring(0, s.length - 1), radix: 10) ?? 0;
+    }
+    if (s.endsWith('B')) {
+      return int.tryParse(s.substring(0, s.length - 1), radix: 2) ?? 0;
+    }
     if (s.endsWith('H')) {
       return int.tryParse(s.substring(0, s.length - 1), radix: 16) ?? 0;
     }
     if (s.startsWith('0X')) return int.tryParse(s.substring(2), radix: 16) ?? 0;
-    return int.tryParse(s) ?? int.tryParse(s, radix: 16) ?? 0;
+    // 8085-style default: bare numeric constants are treated as hexadecimal.
+    if (RegExp(r'^[0-9A-F]+$').hasMatch(s)) {
+      return int.tryParse(s, radix: 16) ?? 0;
+    }
+    return int.tryParse(s, radix: 10) ?? 0;
   }
 
   int _r(String s) => _regs[s] ?? 0;

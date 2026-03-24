@@ -74,17 +74,22 @@ class NoticesSheet extends StatelessWidget {
                 _notice(Icons.bolt, kBlueBright, 'VCT:SET / INT:OK / INT:HLT',
                     'Interrupt vector set, then interrupt executed (or halted) when INT runs.'),
               ]),
-              _section('DISASSEMBLER WARNINGS', kOrange, [
+              _section('DISASSEMBLER NOTES', kOrange, [
                 _notice(
-                    Icons.warning_amber_rounded,
-                    kOrange,
-                    'Data bytes may appear as opcodes',
-                    'The disasm panel scans memory linearly. If data bytes are stored in code regions, they will be misread as instructions. This is a known limitation of linear disassembly.'),
+                    Icons.check_circle_outline,
+                    kGreen,
+                    'ASM-guided decode is enabled',
+                    'After assembling/loading from ASM, disasm decodes only known instruction-start addresses. Other bytes are shown as DATA.'),
+                _notice(
+                    Icons.edit_note,
+                    kBlueBright,
+                    'Manual edits are still allowed',
+                    'Memory bytes can always be edited in KIT mode. Bytes outside known ASM instruction starts are intentionally displayed as DATA to avoid false opcode decoding.'),
                 _notice(
                     Icons.info_outline,
                     kBlueBright,
-                    'Disasm is for reference only',
-                    'Always verify disassembled output against your known program. Long-press any disasm line to jump the address pointer to that location.'),
+                    'Linear fallback still exists',
+                    'If memory was not loaded from ASM metadata, disasm falls back to linear decoding behavior.'),
               ]),
               _section('KIT OPERATION REMINDERS', kBlueBright, [
                 _notice(

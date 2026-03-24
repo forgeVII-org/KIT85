@@ -41,8 +41,8 @@ class ManualSheet extends StatelessWidget {
                       children: [
                     _sec('GETTING STARTED', [
                       'On launch, a short tube-light splash plays (ON -> OFF -> ON, about 2s), then KIT mode opens automatically.',
-                      'Main view in portrait: Disassembler panel, toggle, display, status bar, keyboard.',
-                      'Landscape view: disassembler is pinned on the left for side-by-side debugging.',
+                      'Compact/mobile view: Disassembler panel, toggle, display, status bar, keyboard.',
+                      'Wide desktop/tablet view: disassembler is pinned on the left for side-by-side debugging.',
                       'Use the top-right menu (⋮) for Manual, Opcode Table, Converter, Notices, and About.',
                     ]),
                     _sec('DISPLAY BASICS', [
@@ -117,7 +117,8 @@ class ManualSheet extends StatelessWidget {
                     _sec('DISASSEMBLER PANEL', [
                       'Shows nearby decoded instructions around current address.',
                       'Current row is highlighted; long-press a row to jump address pointer there.',
-                      'Linear disassembly can interpret raw data as opcodes, so treat output as a guide.',
+                      'When code is loaded from ASM, disasm uses assembled instruction boundaries and shows non-code bytes as DATA.',
+                      'If memory is edited manually without ASM metadata, disasm falls back to linear decoding.',
                     ]),
                     _sec('TOOLS / UTILITIES', [
                       'Opcode Table: two tabs (LIST and GRID) for quick mnemonic-to-opcode reference.',
@@ -136,7 +137,7 @@ class ManualSheet extends StatelessWidget {
                       'Use SAMPLES as templates: load, tweak constants/labels, ASSEMBLE, then RUN or → KIT.',
                       'If a key seems ignored, check whether SHIFT mode or a multi-step flow is currently active.',
                       'If interrupts fail, verify your code executed EI before INT.',
-                      'Use landscape for larger disassembly context while stepping or debugging.',
+                      'Use a wider window on desktop for larger disassembly context while stepping or debugging.',
                     ]),
                   ])),
             ]),

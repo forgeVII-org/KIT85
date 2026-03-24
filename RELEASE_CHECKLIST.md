@@ -1,12 +1,13 @@
 # KIT85 Release Checklist
 
-Use this checklist for every public Android release.
+Use this checklist for every public release (Android and Web).
 
 ## 1. Versioning
 
 - Update version in pubspec.yaml.
 - Update in-app version string in lib/constants.dart.
 - Commit version bump before building.
+- Internal replacement build exception: for tiny non-public fixes, you may keep the same app version/code and replace only your private APK artifact (no new tag/release upload).
 
 ## 2. Signing Safety
 
@@ -22,7 +23,7 @@ flutter pub get
 flutter analyze
 flutter test
 
-## 4. Build (Arm64, Hardened, Smallest Practical APK)
+## 4. Build Android (Arm64, Hardened, Smallest Practical APK)
 
 Run one-click script:
 
@@ -32,28 +33,43 @@ Expected output artifact:
 
 build/app/outputs/flutter-apk/app-release.apk
 
-## 5. Security Verification
+## 5. Build Web (GitHub Pages)
+
+Run:
+
+powershell -ExecutionPolicy Bypass -File tools/release-web-pages.ps1
+
+Expected staged output:
+
+docs/app/
+
+Expected live URL:
+
+https://forgevii-org.github.io/KIT85/app/
+
+## 6. Security Verification
 
 - Verify signature output from apksigner in script output.
 - Keep build/debug-info private.
 - Do not upload debug symbols publicly.
 
-## 6. Functional Smoke Test (Physical Device)
+## 7. Functional Smoke Test
 
 - Launch app and complete splash to main flow.
 - Test assemble/load/run workflows.
 - Open all sheets and dialogs.
-- Test orientation behavior.
+- Test compact and wide/desktop browser layout behavior.
 - Test update link behavior.
 
-## 7. Publish
+## 8. Publish
 
 - Create GitHub release tag: vX.Y.Z
 - Use .github/RELEASE_TEMPLATE.md for release notes.
-- Attach arm64 APK.
+- Attach arm64 APK (if Android release is included).
+- Ensure docs/app is committed if web release is included.
 - Add short changelog and known limitations.
 
-## 8. GPLv3 Compliance
+## 9. GPLv3 Compliance
 
 - Keep LICENSE in repository root.
 - Keep source code available with distributed binaries.

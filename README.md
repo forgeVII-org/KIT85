@@ -1,20 +1,37 @@
 # kit85
 
-A Flutter-based 8085 microprocessor simulator.
+A free and open-source 8085 simulator for students, educators, and hobbyists.
+
+KIT85 is an 8085 microprocessor simulator for Android where you can write,
+assemble, and run 8085 assembly programs in a student-friendly workflow.
+
+- Download APK: https://github.com/forgeVII-org/KIT85/releases
+- Source code (GPL v3.0): https://github.com/forgeVII-org/KIT85
+- Platforms: Android + Web
+- Web app: https://forgevii-org.github.io/KIT85/app/
+
+Keywords: 8085 simulator, 8085 microprocessor simulator,
+8085 simulator for Android, 8085 simulator web.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+```bash
+flutter pub get
+flutter run
+```
 
-A few resources to get you started if this is your first Flutter project:
+Run on web locally:
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+```bash
+flutter run -d chrome
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Disassembler behavior
+
+- When program bytes are loaded from ASM, disassembly is ASM-guided.
+- Known instruction-start addresses are decoded as instructions.
+- Other addresses are shown as DATA to avoid false opcode interpretation.
+- In manual-only memory sessions (no ASM metadata), disassembly falls back to linear decoding.
 
 ## Android release signing
 
@@ -60,6 +77,21 @@ powershell -ExecutionPolicy Bypass -File tools/release-android-arm64.ps1
 This script runs analysis, builds a hardened arm64 release APK, and prints
 artifact size and path.
 
+## Web release (GitHub Pages)
+
+The web app is published under:
+
+`https://forgevii-org.github.io/KIT85/app/`
+
+Build and stage a web release into `docs/app`:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools/release-web-pages.ps1
+```
+
+Then commit `docs/app` and push to `main` (with Pages configured to `main` +
+`/docs`).
+
 ## Release checklist
 
 Use this list before cutting a public release.
@@ -101,6 +133,10 @@ flutter build apk --release --target-platform android-arm64 --obfuscate --split-
 6. Archive outputs:
 	- APKs from `build/app/outputs/flutter-apk/`
 	- Symbols from `build/debug-info/`
+
+7. Build and verify web release:
+	- Run `powershell -ExecutionPolicy Bypass -File tools/release-web-pages.ps1`
+	- Open `https://forgevii-org.github.io/KIT85/app/` and validate desktop + mobile layout.
 
 ## Security and anti-theft notes
 
