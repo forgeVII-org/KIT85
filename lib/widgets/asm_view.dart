@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import '../constants.dart';
 import '../cpu/sample_programs.dart';
 import '../screens/kit_screen.dart';
@@ -691,6 +692,8 @@ class _AsmViewState extends State<AsmView> {
     final s = widget.state;
     final lineLimit = KitScreenState.kAsmMaxSourceLines;
     final overLimit = _sourceLineCount > lineLimit;
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final isDesktopWorkspace = screenWidth >= 1280;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       _mirrorScroll(
@@ -705,19 +708,17 @@ class _AsmViewState extends State<AsmView> {
         child: Column(children: [
           // toolbar
           Container(
+            width: double.infinity,
             decoration: BoxDecoration(
               color: kSurface,
               border: Border(
                   bottom: BorderSide(color: kBorder.withValues(alpha: 0.8))),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(mainAxisSize: MainAxisSize.min, children: [
+            child: LayoutBuilder(builder: (_, c) {
+              final toolbarButtons = <Widget>[
                 _btn('ASSEMBLE', kBlue, s.asmLoad),
-                const SizedBox(width: 6),
                 _btn('RUN', const Color(0xFF2E8657), s.asmRun),
-                const SizedBox(width: 6),
                 _btn(
                     'CLEAR',
                     kSurface2,
@@ -726,24 +727,61 @@ class _AsmViewState extends State<AsmView> {
                           s.asmLines = [];
                           s.asmError = '';
                         })),
-                const SizedBox(width: 6),
                 _btnWithLongPress('SAMPLES', const Color(0xFF385D9D),
                     _showSamplePrograms, _showSaveNewSampleDialog),
-                const SizedBox(width: 6),
                 _btn('→ KIT', const Color(0xFFAD5C10), _sendToKit),
-                const SizedBox(width: 10),
+              ];
+
+              final infoWidgets = <Widget>[
                 Text('LINES:$_sourceLineCount/$lineLimit',
                     style: TextStyle(
                         color: overLimit ? kRed : kTextDim,
                         fontSize: 10,
                         fontFamily: kMono,
                         fontWeight: FontWeight.w700)),
-                const SizedBox(width: 10),
                 Text('ORG:${s.asmOrigin.toRadixString(16).toUpperCase()}H',
                     style: const TextStyle(
                         color: kTextDim, fontSize: 10, fontFamily: kMono)),
-              ]),
-            ),
+              ];
+
+              if (c.maxWidth >= 1100) {
+                return Wrap(
+                  spacing: 6,
+                  runSpacing: 6,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    ...toolbarButtons,
+                    const SizedBox(width: 8),
+                    ...infoWidgets,
+                  ],
+                );
+              }
+
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(mainAxisSize: MainAxisSize.min, children: [
+                  _btn('ASSEMBLE', kBlue, s.asmLoad),
+                  const SizedBox(width: 6),
+                  _btn('RUN', const Color(0xFF2E8657), s.asmRun),
+                  const SizedBox(width: 6),
+                  _btn(
+                      'CLEAR',
+                      kSurface2,
+                      () => s.setState(() {
+                            s.asmCtrl.clear();
+                            s.asmLines = [];
+                            s.asmError = '';
+                          })),
+                  const SizedBox(width: 6),
+                  _btnWithLongPress('SAMPLES', const Color(0xFF385D9D),
+                      _showSamplePrograms, _showSaveNewSampleDialog),
+                  const SizedBox(width: 6),
+                  _btn('→ KIT', const Color(0xFFAD5C10), _sendToKit),
+                  const SizedBox(width: 10),
+                  ...infoWidgets,
+                ]),
+              );
+            }),
           ),
           if (s.asmError.isNotEmpty)
             Container(
@@ -765,7 +803,7 @@ class _AsmViewState extends State<AsmView> {
             Container(width: 1, color: kBorder),
             // editor
             Expanded(
-              flex: widget.isWideLayout ? 6 : 5,
+                flex: isDesktopWorkspace ? 7 : (widget.isWideLayout ? 6 : 5),
                 child: Container(
                   color: kSurface,
                   child: TextField(
@@ -812,8 +850,7 @@ class _AsmViewState extends State<AsmView> {
             Container(width: 1, color: kBorder),
             // hex output + highlighted preview
             Expanded(
-              flex: widget.isWideLayout ? 4 : 4,
-              child: _buildOutputPanel(s)),
+                flex: isDesktopWorkspace ? 5 : 4, child: _buildOutputPanel(s)),
           ])),
           _buildRegBar(s),
         ]));
@@ -921,26 +958,84 @@ class _AsmViewState extends State<AsmView> {
     );
   }
 
-  Widget _buildRegBar(KitScreenState s) => Container(
-        color: kSurface,
-        height: 28,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-          child: Row(children: [
-            _rc('A', s.cpu.a),
-            _rc('B', s.cpu.b),
-            _rc('C', s.cpu.c),
-            _rc('D', s.cpu.d),
-            _rc('E', s.cpu.e),
-            _rc('H', s.cpu.h),
-            _rc('L', s.cpu.l),
-            _rc('SP', s.cpu.sp),
-            _rc('PC', s.cpu.pc),
-            _rc('F', s.cpu.fl()),
-          ]),
+  Widget _buildRegBar(KitScreenState s) {
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final useWebDesktopBar = kIsWeb && screenWidth >= 1000;
+
+    final items = [
+      ('A', s.cpu.a),
+      ('B', s.cpu.b),
+      ('C', s.cpu.c),
+      ('D', s.cpu.d),
+      ('E', s.cpu.e),
+      ('H', s.cpu.h),
+      ('L', s.cpu.l),
+      ('SP', s.cpu.sp),
+      ('PC', s.cpu.pc),
+      ('F', s.cpu.fl()),
+    ];
+
+    if (useWebDesktopBar) {
+      return Container(
+        width: double.infinity,
+        constraints: const BoxConstraints(minHeight: 44),
+        decoration: BoxDecoration(
+          color: kSurface,
+          border: Border(top: BorderSide(color: kBorder.withValues(alpha: 0.8))),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        child: Wrap(
+          spacing: 8,
+          runSpacing: 6,
+          children: [
+            for (final (name, val) in items) _regChip(name, val),
+          ],
         ),
       );
+    }
+
+    return Container(
+      color: kSurface,
+      height: 28,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+        child: Row(children: [
+          for (final (name, val) in items) _rc(name, val),
+        ]),
+      ),
+    );
+  }
+
+  Widget _regChip(String name, int val) {
+    final valueText = val
+        .toRadixString(16)
+        .toUpperCase()
+        .padLeft(name == 'SP' || name == 'PC' ? 4 : 2, '0');
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+      decoration: BoxDecoration(
+        color: kSurface2,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: kBorder.withValues(alpha: 0.75)),
+      ),
+      child: RichText(
+        text: TextSpan(children: [
+          TextSpan(
+              text: '$name:',
+              style: const TextStyle(
+                  color: kTextDim, fontSize: 11, fontFamily: kMono)),
+          TextSpan(
+              text: valueText,
+              style: const TextStyle(
+                  color: kGreen,
+                  fontSize: 11,
+                  fontFamily: kMono,
+                  fontWeight: FontWeight.bold)),
+        ]),
+      ),
+    );
+  }
 
   Widget _rc(String name, int val) => Padding(
         padding: const EdgeInsets.only(right: 10),

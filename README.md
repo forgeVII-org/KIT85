@@ -10,6 +10,8 @@ assemble, and run 8085 assembly programs in a student-friendly workflow.
 - Platforms: Android + Web
 - Web app: https://forgevii-org.github.io/KIT85/app/
 
+Web is now available and can be used on any platform (desktop, tablet, or mobile browser).
+
 Keywords: 8085 simulator, 8085 microprocessor simulator,
 8085 simulator for Android, 8085 simulator web.
 
@@ -82,6 +84,8 @@ artifact size and path.
 The web app is published under:
 
 `https://forgevii-org.github.io/KIT85/app/`
+
+The current web build is cross-platform and ready for use on any device with a modern browser.
 
 Build and stage a web release into `docs/app`:
 

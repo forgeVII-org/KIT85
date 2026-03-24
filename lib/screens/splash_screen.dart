@@ -10,6 +10,9 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
+  static const int _splashAnimMs = 1400;
+  static const int _navigateDelayMs = 1700;
+
   late AnimationController _ctrl;
   late Animation<double> _fade;
   late Animation<double> _logoScale;
@@ -21,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen>
   late Animation<double> _borderGlow;
 
   // Flickering animation - simple ON OFF ON pattern
-  // 2000ms total duration with minimal dark time
+  // Tuned for shorter startup while preserving the effect.
   double _getFlickerValue(double progress) {
     // ON: 0-60ms (progress 0-0.03), starts visible immediately
     if (progress < 0.03) {
@@ -40,9 +43,9 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
-    // 2 second animation - simple ON OFF ON pattern
+    // Short startup animation for faster perceived launch.
     _ctrl = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 2000));
+        vsync: this, duration: const Duration(milliseconds: _splashAnimMs));
 
     // Main fade animation
     _fade = CurvedAnimation(parent: _ctrl, curve: Curves.easeInOutCubic);
@@ -83,7 +86,7 @@ class _SplashScreenState extends State<SplashScreen>
     _ctrl.forward();
 
     // Navigate after animation completes
-    Future.delayed(const Duration(milliseconds: 2400), () {
+    Future.delayed(const Duration(milliseconds: _navigateDelayMs), () {
       if (!mounted) return;
       Navigator.pushReplacement(
           context,
@@ -232,7 +235,7 @@ class _SplashStaticText extends StatelessWidget {
                     fontFamily: kMono,
                   )),
           const SizedBox(height: 6),
-          Text('by forgeVIIl  •  v$kAppVersion',
+          Text('by forgeVII  •  v$kAppVersion',
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: kTextDim.withValues(alpha: 0.7),
                     fontFamily: kMono,

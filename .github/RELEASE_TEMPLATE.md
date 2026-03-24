@@ -7,12 +7,18 @@
 - 
 
 ### Build Profile
-- Platform: Android
-- ABI: arm64
-- Hardened: obfuscation enabled, debug info split, icon tree-shaking enabled
+- Platforms: Android + Web
+- Android ABI: arm64
+- Android hardened: obfuscation enabled, debug info split, icon tree-shaking enabled
+- Web deployment: GitHub Pages
 
-### Artifact
+### Artifacts
 - app-release.apk
+- kit85-web-vX.Y.Z.zip
+
+### Web
+- Live URL: https://forgevii-org.github.io/KIT85/app/
+- Web is now available and can be used on any platform (desktop, tablet, or mobile browser).
 
 ### Security Notes
 - Signed with production key

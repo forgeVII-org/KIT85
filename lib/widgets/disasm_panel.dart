@@ -20,84 +20,107 @@ class _DisasmPanelState extends State<DisasmPanel> {
 
   @override
   Widget build(BuildContext context) {
-    final s = widget.state;
-    final lines = s.getDisasm();
+    return LayoutBuilder(builder: (context, c) {
+      final s = widget.state;
+      final lines = s.getDisasm();
+      final hasBoundedHeight = c.maxHeight.isFinite;
+      final isDesktopPanel = hasBoundedHeight && c.maxHeight > 260;
+      final rowHeight = isDesktopPanel ? 22.0 : 19.0;
 
-    int hlAddr = s.addrBuf;
-    int hlIdx = 0;
-    for (int i = 0; i < lines.length; i++) {
-      final a = lines[i]['addr'] as int;
-      final sz = (lines[i]['size'] as int?) ?? 1;
-      if (s.addrBuf >= a && s.addrBuf < a + sz) {
-        hlAddr = a;
-        hlIdx = i;
-        break;
+      int hlAddr = s.addrBuf;
+      int hlIdx = 0;
+      for (int i = 0; i < lines.length; i++) {
+        final a = lines[i]['addr'] as int;
+        final sz = (lines[i]['size'] as int?) ?? 1;
+        if (s.addrBuf >= a && s.addrBuf < a + sz) {
+          hlAddr = a;
+          hlIdx = i;
+          break;
+        }
       }
-    }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!_scroll.hasClients) return;
-      const lineH = 19.0;
-      final offset =
-          ((hlIdx - 4) * lineH).clamp(0.0, _scroll.position.maxScrollExtent);
-      _scroll.jumpTo(offset);
-    });
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!_scroll.hasClients) return;
+        final offset = ((hlIdx - 6) * rowHeight)
+            .clamp(0.0, _scroll.position.maxScrollExtent);
+        _scroll.jumpTo(offset);
+      });
 
-    return Container(
-      height: 146,
-      decoration: BoxDecoration(
-        color: kSurface,
-        border:
-            Border(bottom: BorderSide(color: kBorder.withValues(alpha: 0.9))),
-      ),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Padding(
-            padding: const EdgeInsets.fromLTRB(10, 5, 10, 2),
-            child: Text('DISASM',
-                style: TextStyle(
-                    color: kGreen.withValues(alpha: 0.7),
-                    fontSize: 10,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.8,
-                    fontFamily: kMono))),
-        Expanded(
-            child: ListView.builder(
-          controller: _scroll,
-          padding: const EdgeInsets.symmetric(horizontal: 4),
-          itemCount: lines.length,
-          itemBuilder: (_, i) {
-            final l = lines[i];
-            final active = l['addr'] == hlAddr;
-            final addr = l['addr'] as int;
-            return RepaintBoundary(
-                child: GestureDetector(
-              onLongPress: () => s.jumpToAddr(addr),
-              child: Container(
-                height: 19,
-                color: active
-                    ? kGreen.withValues(alpha: 0.12)
-                    : Colors.transparent,
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: Row(children: [
-                  Expanded(
+      return Container(
+        height: isDesktopPanel ? c.maxHeight : 146,
+        decoration: BoxDecoration(
+          color: kSurface,
+          border: Border(
+            bottom: BorderSide(color: kBorder.withValues(alpha: 0.9)),
+            right: isDesktopPanel
+                ? BorderSide(color: kBorder.withValues(alpha: 0.9))
+                : BorderSide.none,
+          ),
+        ),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Padding(
+              padding: const EdgeInsets.fromLTRB(10, 7, 10, 4),
+              child: Text('DISASM',
+                  style: TextStyle(
+                      color: kGreen.withValues(alpha: 0.7),
+                      fontSize: 10,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 1.8,
+                      fontFamily: kMono))),
+          Expanded(
+              child: ListView.builder(
+            controller: _scroll,
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            itemCount: lines.length,
+            itemBuilder: (_, i) {
+              final l = lines[i];
+              final active = l['addr'] == hlAddr;
+              final addr = l['addr'] as int;
+              final addrText =
+                  addr.toRadixString(16).toUpperCase().padLeft(4, '0');
+              return RepaintBoundary(
+                  child: GestureDetector(
+                onLongPress: () => s.jumpToAddr(addr),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 120),
+                  height: rowHeight,
+                  color: active
+                      ? kGreen.withValues(alpha: 0.12)
+                      : Colors.transparent,
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: Row(children: [
+                    SizedBox(
+                      width: 40,
                       child: Text(
-                    '${addr.toRadixString(16).toUpperCase().padLeft(4, '0')}  ${l['line']}',
-                    style: TextStyle(
-                        color: active ? kGreen : kTextDim,
-                        fontSize: 11,
-                        fontFamily: kMono,
-                        letterSpacing: 0.35),
-                  )),
-                  if (!active)
-                    Icon(Icons.arrow_upward,
-                        size: 10, color: kTextDim.withValues(alpha: 0.2)),
-                ]),
-              ),
-            ));
-          },
-        )),
-      ]),
-    );
+                        addrText,
+                        style: TextStyle(
+                            color: active
+                                ? kGreen
+                                : kTextDim.withValues(alpha: 0.8),
+                            fontSize: 11,
+                            fontFamily: kMono,
+                            letterSpacing: 0.3),
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Expanded(
+                        child: Text(
+                      l['line'] as String,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          color: active ? kGreen : kTextDim,
+                          fontSize: 11,
+                          fontFamily: kMono,
+                          letterSpacing: 0.25),
+                    )),
+                  ]),
+                ),
+              ));
+            },
+          )),
+        ]),
+      );
+    });
   }
 }
 

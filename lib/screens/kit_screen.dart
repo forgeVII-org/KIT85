@@ -1057,7 +1057,7 @@ class KitScreenState extends State<KitScreen> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.sizeOf(context).width;
-    final isWideLayout = screenWidth >= 980;
+    final isWideLayout = screenWidth >= 1000;
     return Scaffold(
       backgroundColor: kBg,
       resizeToAvoidBottomInset: false,
@@ -1162,7 +1162,7 @@ class KitScreenState extends State<KitScreen> {
   // ── kit view ──────────────────────────────────────────────────────────────
   Widget _buildKitView(bool isWideLayout, double screenWidth) {
     if (isWideLayout) {
-      final disasmWidth = (screenWidth * 0.34).clamp(300.0, 460.0).toDouble();
+      final disasmWidth = (screenWidth * 0.33).clamp(340.0, 540.0).toDouble();
       return Row(children: [
         SizedBox(width: disasmWidth, child: DisasmPanel(state: this)),
         Expanded(

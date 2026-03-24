@@ -25,11 +25,6 @@ class UpdateChecker {
         if (context.mounted) {
           _showDialog(context, latestTag, notes, downloadUrl);
         }
-      } else {
-        // App is up to date
-        if (context.mounted) {
-          _showSnackbar(context, '✓ App is up to date (v$kAppVersion)');
-        }
       }
     } catch (e) {
       debugPrint('UpdateChecker: failed to process release payload: $e');

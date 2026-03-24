@@ -47,6 +47,8 @@ Expected live URL:
 
 https://forgevii-org.github.io/KIT85/app/
 
+Release note text to include: Web is now available and can be used on any platform (desktop, tablet, or mobile browser).
+
 ## 6. Security Verification
 
 - Verify signature output from apksigner in script output.
@@ -66,6 +68,7 @@ https://forgevii-org.github.io/KIT85/app/
 - Create GitHub release tag: vX.Y.Z
 - Use .github/RELEASE_TEMPLATE.md for release notes.
 - Attach arm64 APK (if Android release is included).
+- Attach web artifact zip (kit85-web-vX.Y.Z.zip) below APK in the same release.
 - Ensure docs/app is committed if web release is included.
 - Add short changelog and known limitations.
 
