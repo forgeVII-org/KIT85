@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../constants.dart';
 
 class ConverterSheet extends StatefulWidget {
@@ -14,21 +15,76 @@ class _ConverterSheetState extends State<ConverterSheet> {
   final _oct = TextEditingController();
   bool _busy = false;
 
-  void _set(int v) {
-    _dec.text = v.toString();
-    _hex.text = v.toRadixString(16).toUpperCase().padLeft(v > 255 ? 4 : 2, '0');
-    _bin.text = v.toRadixString(2).padLeft(v > 255 ? 16 : 8, '0');
-    _oct.text = v.toRadixString(8);
+  static final _decInput = <TextInputFormatter>[
+    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+    LengthLimitingTextInputFormatter(5),
+  ];
+
+  static final _binInput = <TextInputFormatter>[
+    FilteringTextInputFormatter.allow(RegExp(r'[01]')),
+    LengthLimitingTextInputFormatter(16),
+  ];
+
+  static final _octInput = <TextInputFormatter>[
+    FilteringTextInputFormatter.allow(RegExp(r'[0-7]')),
+    LengthLimitingTextInputFormatter(6),
+  ];
+
+  static final _hexInput = <TextInputFormatter>[
+    TextInputFormatter.withFunction((oldValue, newValue) {
+      final next = newValue.text.toUpperCase();
+      if (next.isEmpty) return newValue;
+      if (!RegExp(r'^[0-9A-FH]*$').hasMatch(next)) return oldValue;
+
+      final hCount = 'H'.allMatches(next).length;
+      if (hCount > 1) return oldValue;
+      if (hCount == 1 && !next.endsWith('H')) return oldValue;
+
+      final core =
+          next.endsWith('H') ? next.substring(0, next.length - 1) : next;
+      if (core.length > 4) return oldValue;
+
+      return TextEditingValue(
+        text: next,
+        selection: newValue.selection,
+        composing: TextRange.empty,
+      );
+    }),
+  ];
+
+  void _set(int v, {TextEditingController? source, String? sourceText}) {
+    if (source != _dec) {
+      _dec.text = v.toString();
+    }
+    if (source != _hex) {
+      _hex.text =
+          v.toRadixString(16).toUpperCase().padLeft(v > 255 ? 4 : 2, '0');
+    }
+    if (source != _bin) {
+      _bin.text = v.toRadixString(2).padLeft(v > 255 ? 16 : 8, '0');
+    }
+    if (source != _oct) {
+      _oct.text = v.toRadixString(8);
+    }
+
+    if (source != null && sourceText != null) {
+      source.text = sourceText;
+      source.selection = TextSelection.collapsed(offset: sourceText.length);
+    }
     setState(() {});
   }
 
-  void _update(String raw, {int radix = 10}) {
+  void _update(String raw,
+      {required TextEditingController source, int radix = 10}) {
     if (_busy) return;
     _busy = true;
-    final s = raw.trim().replaceAll(RegExp(r'[Hh]'), '');
+    final input = raw.trim().toUpperCase();
+    final s = radix == 16 && input.endsWith('H')
+        ? input.substring(0, input.length - 1)
+        : input;
     final v = int.tryParse(s, radix: radix);
     if (v != null && v >= 0 && v <= 65535) {
-      _set(v);
+      _set(v, source: source, sourceText: input);
     } else if (raw.isEmpty) {
       _dec.clear();
       _hex.clear();
@@ -73,17 +129,17 @@ class _ConverterSheetState extends State<ConverterSheet> {
                         fontWeight: FontWeight.bold,
                         letterSpacing: 1)),
               ])),
-          _field('DEC', _dec, (s) => _update(s), kBlueBright,
-              TextInputType.number),
+          _field('DEC', _dec, (s) => _update(s, source: _dec), kBlueBright,
+              TextInputType.number, _decInput),
           const SizedBox(height: 8),
-          _field('HEX', _hex, (s) => _update(s, radix: 16), kGreen,
-              TextInputType.text),
+          _field('HEX', _hex, (s) => _update(s, source: _hex, radix: 16),
+              kGreen, TextInputType.text, _hexInput),
           const SizedBox(height: 8),
-          _field('BIN', _bin, (s) => _update(s, radix: 2), kOrange,
-              TextInputType.number),
+          _field('BIN', _bin, (s) => _update(s, source: _bin, radix: 2),
+              kOrange, TextInputType.number, _binInput),
           const SizedBox(height: 8),
-          _field('OCT', _oct, (s) => _update(s, radix: 8),
-              const Color(0xFFCE93D8), TextInputType.number),
+          _field('OCT', _oct, (s) => _update(s, source: _oct, radix: 8),
+              const Color(0xFFCE93D8), TextInputType.number, _octInput),
           const SizedBox(height: 14),
           _bitView(),
           const SizedBox(height: 12),
@@ -94,8 +150,13 @@ class _ConverterSheetState extends State<ConverterSheet> {
     );
   }
 
-  Widget _field(String lbl, TextEditingController ctrl,
-          Function(String) onChange, Color c, TextInputType kt) =>
+  Widget _field(
+          String lbl,
+          TextEditingController ctrl,
+          Function(String) onChange,
+          Color c,
+          TextInputType kt,
+          List<TextInputFormatter> formatters) =>
       Row(children: [
         SizedBox(
             width: 38,
@@ -111,6 +172,7 @@ class _ConverterSheetState extends State<ConverterSheet> {
           controller: ctrl,
           keyboardType: kt,
           onChanged: onChange,
+          inputFormatters: formatters,
           style: TextStyle(
               color: c,
               fontSize: 13,

@@ -47,5 +47,18 @@ void main() {
       expect(lines[0].bytes, equals([0x00]));
       expect(lines[1].bytes, equals([0xC3, 0x00, 0x90]));
     });
+
+    test('reports invalid MOV operands instead of silently encoding', () {
+      final lines = asm.assemble(
+        [
+          'MOV 2000H, A',
+        ],
+        0x9000,
+      );
+
+      expect(lines.first.bytes, isEmpty);
+      expect(lines.first.error, isNotNull);
+      expect(lines.first.error, contains('MOV'));
+    });
   });
 }

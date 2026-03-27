@@ -59,7 +59,17 @@ Release note text to include: Web is now available and can be used on any platfo
 
 - Launch app and complete splash to main flow.
 - Test assemble/load/run workflows.
+- Verify assembler invalid operand warnings appear (example: MOV B, MOV 2000H,A).
 - Open all sheets and dialogs.
+- Verify menu categories:
+	- Info: User Manual, Notices and Warnings, About
+	- Tools: Number Converter, Opcode Table, Sample Procedures
+	- Settings: Keyboard Vibration toggle
+- Verify converter input validation:
+	- BIN accepts only 0/1
+	- HEX accepts valid hex (optional trailing H)
+	- Empty delete state stays empty
+- Open Sample Procedures and verify practical memory examples render.
 - Test compact and wide/desktop browser layout behavior.
 - Test update link behavior.
 

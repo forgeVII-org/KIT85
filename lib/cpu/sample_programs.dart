@@ -12,6 +12,187 @@ class SampleProgram {
 
 const samplePrograms = <SampleProgram>[
   SampleProgram(
+    name: 'Add Two 8-bit Numbers',
+    description: 'Adds two 8-bit values and stores sum + carry',
+    code: '''; [2300H] + [2301H] -> sum at 2302H, carry at 2303H
+ORG 2100H
+
+MVI C, 00H
+LDA 2300H
+MOV B, A
+LDA 2301H
+ADD B
+JNC STORE_SUM
+INR C
+STORE_SUM: STA 2302H
+MOV A, C
+STA 2303H
+HLT
+''',
+  ),
+  SampleProgram(
+    name: 'Subtract Two 8-bit Numbers',
+    description: 'Subtracts two 8-bit values and stores result + borrow',
+    code: '''; [2300H] - [2301H] -> result at 2302H, borrow at 2303H
+ORG 2100H
+
+MVI C, 00H
+LDA 2300H
+MOV B, A
+LDA 2301H
+SUB B
+JNC STORE_DIFF
+INR C
+CMA
+ADI 01H
+STORE_DIFF: STA 2302H
+MOV A, C
+STA 2303H
+HLT
+''',
+  ),
+  SampleProgram(
+    name: 'Add Two 16-bit Numbers',
+    description: 'Adds two 16-bit values and stores sum + carry',
+    code: '''; [2800H..2801H] + [2802H..2803H]
+ORG 2500H
+
+MVI C, 00H
+LHLD 2800H
+XCHG
+LHLD 2802H
+DAD D
+JNC STORE16
+INR C
+STORE16: SHLD 2804H
+MOV A, C
+STA 2806H
+HLT
+''',
+  ),
+  SampleProgram(
+    name: 'Subtract Two 16-bit Numbers',
+    description: 'Subtracts two 16-bit values and stores result + borrow',
+    code: '''; [2800H..2801H] - [2802H..2803H]
+ORG 2500H
+
+MVI C, 00H
+LHLD 2800H
+XCHG
+LHLD 2802H
+MOV A, E
+SUB L
+STA 2804H
+MOV A, D
+SBB H
+STA 2805H
+JNC DONE16SUB
+INR C
+DONE16SUB: MOV A, C
+STA 2806H
+HLT
+''',
+  ),
+  SampleProgram(
+    name: 'Multiply Two 8-bit Numbers',
+    description: 'Multiplies two 8-bit values via repeated addition',
+    code: '''; [2500H] * [2501H] -> low at 2502H, high at 2503H
+ORG 2100H
+
+LDA 2500H
+MOV B, A
+LDA 2501H
+MOV C, A
+MVI A, 00H
+MVI D, 00H
+MUL_LOOP: ADD B
+JNC NO_CARRY
+INR D
+NO_CARRY: DCR C
+JNZ MUL_LOOP
+STA 2502H
+MOV A, D
+STA 2503H
+HLT
+''',
+  ),
+  SampleProgram(
+    name: 'Divide Two 8-bit Numbers',
+    description: 'Divides two 8-bit values, stores quotient and remainder',
+    code: '''; [2500H] / [2501H] -> quotient at 2503H, remainder at 2502H
+ORG 2100H
+
+MVI C, 00H
+LDA 2500H
+MOV D, A
+LDA 2501H
+MOV B, A
+MOV A, D
+DIV_LOOP: CMP B
+JC DIV_DONE
+SUB B
+INR C
+JMP DIV_LOOP
+DIV_DONE: STA 2502H
+MOV A, C
+STA 2503H
+HLT
+''',
+  ),
+  SampleProgram(
+    name: 'Multiply Two 16-bit Numbers',
+    description: 'Multiplies two 16-bit values via repeated addition',
+    code: '''; [2200H..2201H] * [2202H..2203H]
+ORG 2100H
+
+LHLD 2200H
+SPHL
+LHLD 2202H
+XCHG
+LXI H, 0000H
+LXI B, 0000H
+NEXT: DAD SP
+JNC LOOP
+INX B
+LOOP: DCX D
+MOV A, E
+ORA D
+JNZ NEXT
+SHLD 2204H
+MOV L, C
+MOV H, B
+SHLD 2206H
+HLT
+''',
+  ),
+  SampleProgram(
+    name: 'Divide Two 16-bit Numbers',
+    description: 'Divides two 16-bit values, stores quotient and remainder',
+    code: '''; [2800H..2801H] / [2802H..2803H]
+ORG 2500H
+
+LXI B, 0000H
+LHLD 2802H
+XCHG
+LHLD 2800H
+LOOP2: MOV A, L
+SUB E
+MOV L, A
+MOV A, H
+SBB D
+MOV H, A
+JC LOOP1
+INX B
+JMP LOOP2
+LOOP1: DAD D
+SHLD 2806H
+MOV L, C
+MOV H, B
+SHLD 2804H
+HLT
+''',
+  ),
+  SampleProgram(
     name: 'Counter (0-255)',
     description: 'Counts from 0 to 255 in register A',
     code: '''; Count upward in A until it overflows back to 00H

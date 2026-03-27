@@ -12,6 +12,25 @@ assemble, and run 8085 assembly programs in a student-friendly workflow.
 
 Web is now available and can be used on any platform (desktop, tablet, or mobile browser).
 
+## What's New in v1.1.0
+
+- Converter input hardening:
+	- DEC/BIN/OCT/HEX now reject invalid characters while typing.
+	- Bit-length and field-length limits are enforced.
+	- Empty input stays empty (no forced 00-style reset during editing).
+- Assembler safety improvements:
+	- Invalid operand combinations now raise clear errors.
+	- Missing operands (example: MOV B) are reported instead of silently encoding.
+- Improved top-right menu grouping:
+	- Info: User Manual, Notices and Warnings, About
+	- Tools: Number Converter, Opcode Table, Sample Procedures
+	- Settings: Keyboard vibration toggle
+- New guided learning tools:
+	- Sample Procedures sheet with step-by-step flow.
+	- Practical examples with exact memory input and expected output values.
+- Added math-oriented sample programs at top:
+	- 8-bit/16-bit add, subtract, multiply, divide.
+
 Keywords: 8085 simulator, 8085 microprocessor simulator,
 8085 simulator for Android, 8085 simulator web.
 
@@ -86,6 +105,8 @@ The web app is published under:
 `https://forgevii-org.github.io/KIT85/app/`
 
 The current web build is cross-platform and ready for use on any device with a modern browser.
+
+Landing page version: v1.1.0
 
 Build and stage a web release into `docs/app`:
 

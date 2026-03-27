@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/foundation.dart';
 import '../constants.dart';
 import '../cpu/cpu_8085.dart';
 import '../cpu/assembler_8085.dart';
@@ -12,6 +13,7 @@ import '../widgets/asm_view.dart';
 import '../sheets/manual_sheet.dart';
 import '../sheets/opcode_sheet.dart';
 import '../sheets/converter_sheet.dart';
+import '../sheets/sample_procedures_sheet.dart';
 import '../sheets/about_sheet.dart';
 import '../utils/update_checker.dart';
 import '../sheets/notices_sheet.dart';
@@ -31,6 +33,7 @@ class KitScreenState extends State<KitScreen> {
 
   int addrBuf = 0, dataBuf = 0, inputDigits = 0;
   bool shifted = false;
+  bool vibrationEnabled = true;
   String status = 'RESET';
   bool asmMode = false, disasmVisible = true;
   bool addrOn = false, dataOn = false, execDone = false;
@@ -56,6 +59,12 @@ class KitScreenState extends State<KitScreen> {
   int _strStart = 0, _strStep = 0;
   int _vctAddr = 0x003C;
   bool _memActive = false;
+
+  bool get vibrationAvailable {
+    if (kIsWeb) return false;
+    return defaultTargetPlatform == TargetPlatform.android ||
+        defaultTargetPlatform == TargetPlatform.iOS;
+  }
 
   bool get _inFlow =>
       _fillStep > 0 || _bmStep > 0 || _mcStep > 0 || _strStep > 0;
@@ -778,7 +787,194 @@ class KitScreenState extends State<KitScreen> {
   void showManual() => _sheet(const ManualSheet());
   void showOpcodeTable() => _sheet(const OpcodeSheet());
   void showConverter() => _sheet(const ConverterSheet());
+  void showSampleProcedures() => _sheet(const SampleProceduresSheet());
   void showNotices() => _sheet(const NoticesSheet());
+
+  void showInfo() {
+    showModalBottomSheet(
+      context: context,
+      useSafeArea: true,
+      showDragHandle: true,
+      backgroundColor: kSurface,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(18))),
+      builder: (_) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(8, 8, 8, 12),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Padding(
+                padding: EdgeInsets.fromLTRB(8, 0, 8, 4),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('INFO',
+                      style: TextStyle(
+                          color: kText,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1,
+                          fontFamily: kMono)),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.menu_book, color: kBlueBright),
+                title: const Text('User Manual',
+                    style: TextStyle(color: kText, fontFamily: kMono)),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  showManual();
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.warning_amber_rounded, color: kOrange),
+                title: const Text('Notices & Warnings',
+                    style: TextStyle(color: kText, fontFamily: kMono)),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  showNotices();
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.info_outline, color: kTextDim),
+                title: const Text('About',
+                    style: TextStyle(color: kText, fontFamily: kMono)),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  showAbout();
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void showTools() {
+    showModalBottomSheet(
+      context: context,
+      useSafeArea: true,
+      showDragHandle: true,
+      backgroundColor: kSurface,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(18))),
+      builder: (_) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(8, 8, 8, 12),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Padding(
+                padding: EdgeInsets.fromLTRB(8, 0, 8, 4),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('TOOLS',
+                      style: TextStyle(
+                          color: kText,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1,
+                          fontFamily: kMono)),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.calculate, color: kOrange),
+                title: const Text('Number Converter',
+                    style: TextStyle(color: kText, fontFamily: kMono)),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  showConverter();
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.table_chart, color: kGreen),
+                title: const Text('Opcode Table',
+                    style: TextStyle(color: kText, fontFamily: kMono)),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  showOpcodeTable();
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.school_outlined, color: kBlueBright),
+                title: const Text('Sample Procedures',
+                    style: TextStyle(color: kText, fontFamily: kMono)),
+                subtitle: const Text('Step-by-step guide for each sample',
+                    style: TextStyle(color: kTextDim, fontSize: 10)),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  showSampleProcedures();
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void showSettings() {
+    showModalBottomSheet(
+      context: context,
+      useSafeArea: true,
+      showDragHandle: true,
+      backgroundColor: kSurface,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(18))),
+      builder: (_) => StatefulBuilder(
+        builder: (context, setModalState) => SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('SETTINGS',
+                    style: TextStyle(
+                        color: kText,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1,
+                        fontFamily: kMono)),
+                const SizedBox(height: 10),
+                Container(
+                  decoration: BoxDecoration(
+                    color: kSurface2,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: kBorder),
+                  ),
+                  child: SwitchListTile(
+                    value: vibrationAvailable && vibrationEnabled,
+                    onChanged: vibrationAvailable
+                        ? (value) {
+                            setState(() => vibrationEnabled = value);
+                            setModalState(() {});
+                          }
+                        : null,
+                    activeThumbColor: kOrange,
+                    title: const Text('Keyboard Vibration',
+                        style: TextStyle(
+                            color: kText,
+                            fontFamily: kMono,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700)),
+                    subtitle: Text(
+                      vibrationAvailable
+                          ? 'Enable haptic feedback on key tap.'
+                          : 'Not available on this platform.',
+                      style: const TextStyle(
+                          color: kTextDim, fontFamily: kMono, fontSize: 10),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
   // ── disassembler ──────────────────────────────────────────────────────────
   static const Map<int, String> mn = {
@@ -998,47 +1194,41 @@ class KitScreenState extends State<KitScreen> {
     } else {
       line = raw;
     }
+
     return {'addr': a, 'line': line, 'size': sz};
   }
 
   List<Map<String, dynamic>> _disasm(int anchor, int before, int after) {
-    if (asmInstrStarts.isEmpty) {
-      final scanStart = (anchor - 60).clamp(0, 0xFFFF);
-      final addrs = <int>[];
-      int a = scanStart;
-      while (a <= anchor) {
-        addrs.add(a);
-        a += _entrySizeAt(a);
-      }
-      final ba = <int>[];
-      for (int i = addrs.length - 1; i >= 0 && ba.length < before; i--) {
-        ba.insert(0, addrs[i]);
-      }
-      final from = ba.isNotEmpty ? ba.first : anchor;
-      final out = <Map<String, dynamic>>[];
-      int cur = from;
-      while (out.length < before + 1 + after && cur < 0x10000) {
-        final entry = _disasmEntry(cur);
-        out.add(entry);
-        cur += (entry['size'] as int);
-      }
-      return out;
+    final center = _entryStartForAnchor(anchor);
+    final addrs = <int>[center];
+
+    int a = center;
+    while (addrs.length < after + 1) {
+      final next = a + _entrySizeAt(a);
+      if (next > 0xFFFF) break;
+      addrs.add(next);
+      a = next;
     }
 
-    final normAnchor = _entryStartForAnchor(anchor);
-    int from = normAnchor;
-    for (int i = 0; i < before; i++) {
-      final prev = _prevEntryStart(from);
-      if (prev == from) break;
-      from = prev;
+    final ba = <int>[];
+    int prev = center;
+    while (ba.length < before && prev > 0) {
+      final p = _prevEntryStart(prev);
+      if (p == prev) break;
+      ba.add(p);
+      prev = p;
     }
+
+    final ordered = [...ba.reversed, ...addrs];
+    final from = ordered.isNotEmpty ? ordered.first : center;
 
     final out = <Map<String, dynamic>>[];
     int cur = from;
-    while (out.length < before + 1 + after && cur < 0x10000) {
+    while (out.length < before + 1 + after && cur <= 0xFFFF) {
       final entry = _disasmEntry(cur);
       out.add(entry);
       cur += (entry['size'] as int);
+      if (cur <= (entry['addr'] as int)) break;
     }
     return out;
   }
@@ -1117,36 +1307,23 @@ class KitScreenState extends State<KitScreen> {
             icon: const Icon(Icons.more_vert_rounded, color: kTextDim),
             color: kSurface2,
             onSelected: (v) {
-              if (v == 'manual') {
-                showManual();
-              } else if (v == 'opcodes') {
-                showOpcodeTable();
-              } else if (v == 'converter') {
-                showConverter();
-              } else if (v == 'notices') {
-                showNotices();
-              } else if (v == 'about') {
-                showAbout();
+              if (v == 'info') {
+                showInfo();
+              } else if (v == 'tools') {
+                showTools();
+              } else if (v == 'settings') {
+                showSettings();
               }
             },
             itemBuilder: (_) => [
               PopupMenuItem(
-                  value: 'manual',
-                  child: _mi(Icons.menu_book, 'User Manual', kBlueBright)),
+                  value: 'info', child: _mi(Icons.info_outline, 'Info', kTextDim)),
               PopupMenuItem(
-                  value: 'opcodes',
-                  child: _mi(Icons.table_chart, 'Opcode Table', kGreen)),
+                  value: 'tools',
+                  child: _mi(Icons.build_circle_outlined, 'Tools', kBlueBright)),
               PopupMenuItem(
-                  value: 'converter',
-                  child: _mi(Icons.calculate, 'Number Converter', kOrange)),
-              PopupMenuItem(
-                  value: 'notices',
-                  child: _mi(Icons.warning_amber_rounded, 'Notices & Warnings',
-                      kOrange)),
-              const PopupMenuDivider(),
-              PopupMenuItem(
-                  value: 'about',
-                  child: _mi(Icons.info_outline, 'About', kTextDim)),
+                  value: 'settings',
+                  child: _mi(Icons.settings_outlined, 'Settings', kOrange)),
             ],
           ),
         ],
@@ -1170,7 +1347,10 @@ class KitScreenState extends State<KitScreen> {
           HexDisplay(state: this),
           KitStatusBar(state: this),
           Container(height: 1, color: kBorder),
-          Expanded(child: KitKeyboard(state: this)),
+          Expanded(
+              child: KitKeyboard(
+                  state: this,
+                  hapticsEnabled: vibrationAvailable && vibrationEnabled)),
         ])),
       ]);
     }
@@ -1181,7 +1361,10 @@ class KitScreenState extends State<KitScreen> {
       HexDisplay(state: this),
       KitStatusBar(state: this),
       Container(height: 1, color: kBorder),
-      Expanded(child: KitKeyboard(state: this)),
+      Expanded(
+          child: KitKeyboard(
+              state: this,
+              hapticsEnabled: vibrationAvailable && vibrationEnabled)),
     ]);
   }
 }

@@ -5,7 +5,12 @@ import '../screens/kit_screen.dart';
 
 class KitKeyboard extends StatelessWidget {
   final KitScreenState state;
-  const KitKeyboard({super.key, required this.state});
+  final bool hapticsEnabled;
+  const KitKeyboard({
+    super.key,
+    required this.state,
+    required this.hapticsEnabled,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -171,7 +176,9 @@ class KitKeyboard extends StatelessWidget {
                 splashColor: kBlueBright.withValues(alpha: 0.16),
                 highlightColor: kBlueBright.withValues(alpha: 0.08),
                 onTap: () {
-                  HapticFeedback.lightImpact();
+                  if (hapticsEnabled) {
+                    HapticFeedback.lightImpact();
+                  }
                   onTap();
                 },
                 child: Ink(
