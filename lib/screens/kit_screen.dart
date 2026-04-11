@@ -827,7 +827,8 @@ class KitScreenState extends State<KitScreen> {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.warning_amber_rounded, color: kOrange),
+                leading:
+                    const Icon(Icons.warning_amber_rounded, color: kOrange),
                 title: const Text('Notices & Warnings',
                     style: TextStyle(color: kText, fontFamily: kMono)),
                 onTap: () {
@@ -1317,10 +1318,12 @@ class KitScreenState extends State<KitScreen> {
             },
             itemBuilder: (_) => [
               PopupMenuItem(
-                  value: 'info', child: _mi(Icons.info_outline, 'Info', kTextDim)),
+                  value: 'info',
+                  child: _mi(Icons.info_outline, 'Info', kTextDim)),
               PopupMenuItem(
                   value: 'tools',
-                  child: _mi(Icons.build_circle_outlined, 'Tools', kBlueBright)),
+                  child:
+                      _mi(Icons.build_circle_outlined, 'Tools', kBlueBright)),
               PopupMenuItem(
                   value: 'settings',
                   child: _mi(Icons.settings_outlined, 'Settings', kOrange)),

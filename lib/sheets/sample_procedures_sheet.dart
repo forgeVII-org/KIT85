@@ -41,16 +41,19 @@ const _sampleProcedureByName = <String, _SampleProcedureInfo>{
     inputs: ['2300H = minuend', '2301H = subtrahend'],
     outputs: ['2302H = difference', '2303H = borrow flag (00/01)'],
     exampleInput: [
-      _AddrValue('2300H', '09H'),
-      _AddrValue('2301H', '05H'),
+      _AddrValue('2300H', '06H'),
+      _AddrValue('2301H', '09H'),
     ],
     exampleOutput: [
-      _AddrValue('2302H', '04H'),
-      _AddrValue('2303H', '00H'),
+      _AddrValue('2302H', 'FDH'),
+      _AddrValue('2303H', '01H'),
     ],
   ),
   'Add Two 16-bit Numbers': _SampleProcedureInfo(
-    inputs: ['2800H..2801H = first 16-bit value', '2802H..2803H = second 16-bit value'],
+    inputs: [
+      '2800H..2801H = first 16-bit value',
+      '2802H..2803H = second 16-bit value'
+    ],
     outputs: ['2804H..2805H = 16-bit sum', '2806H = carry (00/01)'],
     exampleInput: [
       _AddrValue('2800H..2801H', '1234H'),
@@ -63,14 +66,13 @@ const _sampleProcedureByName = <String, _SampleProcedureInfo>{
   ),
   'Subtract Two 16-bit Numbers': _SampleProcedureInfo(
     inputs: ['2800H..2801H = minuend', '2802H..2803H = subtrahend'],
-    outputs: ['2804H..2805H = difference', '2806H = borrow (00/01)'],
+    outputs: ['2804H..2805H = difference'],
     exampleInput: [
       _AddrValue('2800H..2801H', '1234H'),
       _AddrValue('2802H..2803H', '0102H'),
     ],
     exampleOutput: [
       _AddrValue('2804H..2805H', '1132H'),
-      _AddrValue('2806H', '00H'),
     ],
   ),
   'Multiply Two 8-bit Numbers': _SampleProcedureInfo(
@@ -99,7 +101,10 @@ const _sampleProcedureByName = <String, _SampleProcedureInfo>{
   ),
   'Multiply Two 16-bit Numbers': _SampleProcedureInfo(
     inputs: ['2200H..2201H = multiplicand', '2202H..2203H = multiplier'],
-    outputs: ['2204H..2205H = product low word', '2206H..2207H = product high word'],
+    outputs: [
+      '2204H..2205H = product low word',
+      '2206H..2207H = product high word'
+    ],
     exampleInput: [
       _AddrValue('2200H..2201H', '0003H'),
       _AddrValue('2202H..2203H', '0004H'),
@@ -200,7 +205,8 @@ class SampleProceduresSheet extends StatelessWidget {
                         _step('1. Open ASM mode and choose SAMPLES.'),
                         _step('2. Select this sample and press ASSEMBLE.'),
                         _step('3. Read each instruction from top to bottom.'),
-                        _step('4. Press RUN and observe registers/memory changes.'),
+                        _step(
+                            '4. Press RUN and observe registers/memory changes.'),
                         if (info != null) ...[
                           const SizedBox(height: 6),
                           _sectionTitle('INPUT SETUP'),
@@ -293,5 +299,4 @@ class SampleProceduresSheet extends StatelessWidget {
   }
 
   String _fmtAddrVal(_AddrValue v) => '${v.address} = ${v.value}';
-
 }
