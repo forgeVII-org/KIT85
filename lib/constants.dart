@@ -17,5 +17,5 @@ const kMono = 'monospace';
 const kGithubUser = 'forgeVII-org';
 const kGithubRepo = 'KIT85';
 
-const kAppVersion = '1.1.1';
+const kAppVersion = '1.1.2';
 const kPackageName = 'com.forgeVII.kit85';

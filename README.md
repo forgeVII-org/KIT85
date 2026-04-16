@@ -12,7 +12,7 @@ assemble, and run 8085 assembly programs in a student-friendly workflow.
 
 Web is now available and can be used on any platform (desktop, tablet, or mobile browser).
 
-## What's New in v1.1.1
+## What's New in v1.1.2
 
 - Converter input hardening:
 	- DEC/BIN/OCT/HEX now reject invalid characters while typing.
@@ -107,7 +107,7 @@ The web app is published under:
 
 The current web build is cross-platform and ready for use on any device with a modern browser.
 
-Landing page version: v1.1.1
+Landing page version: v1.1.2
 
 Build and stage a web release into `docs/app`:
 

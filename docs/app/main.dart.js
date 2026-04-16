@@ -26170,7 +26170,7 @@ j=l==null?null:J.dQ(l)
 o=j==null?"":j
 n=A.aDw(h)
 if(n==null||n.length===0){s=1
-break}if(A.aPM(p,"1.1.1"))if(a.e!=null)A.aPO(a,p,o,n)}catch(g){m=A.au(g)
+break}if(A.aPM(p,"1.1.2"))if(a.e!=null)A.aPO(a,p,o,n)}catch(g){m=A.au(g)
 A.wZ().$1("UpdateChecker: failed to process release payload: "+A.k(m))}case 1:return A.P(q,r)}})
 return A.Q($async$ais,r)},
 vw(){var s=0,r=A.R(t.nA),q,p=2,o=[],n,m,l,k,j,i,h,g,f,e,d,c,b,a,a0,a1,a2,a3,a4,a5
@@ -89658,7 +89658,7 @@ o=A.aA("KIT85",q,q,q,q,q,o==null?q:o.Wk(p,7),q,q)
 s=A.N(a).ok.Q
 s=A.aA("8085 Microprocessor Simulator",q,q,q,q,q,s==null?q:s.Wk(p,2),q,q)
 r=A.N(a).ok.ax
-return A.ca(A.a([B.To,o,B.br,s,B.cw,A.aA("by forgeVII  \u2022  v1.1.1",q,q,q,q,q,r==null?q:r.I5(B.I.b9(0.7),p),q,q)],t.p),B.v,B.q,B.x)}}
+return A.ca(A.a([B.To,o,B.br,s,B.cw,A.aA("by forgeVII  \u2022  v1.1.2",q,q,q,q,q,r==null?q:r.I5(B.I.b9(0.7),p),q,q)],t.p),B.v,B.q,B.x)}}
 A.HJ.prototype={
 l(){var s=this,r=s.bu$
 if(r!=null)r.J(s.ghg())
@@ -89670,7 +89670,7 @@ this.hh()}}
 A.In.prototype={
 L(a){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e=this,d=null,c=A.b3(d,d,B.l,d,d,new A.br(B.U,d,d,A.b2(2),d,d,B.F),d,4,B.GQ,d,d,d,36),b=A.b2(14)
 b=A.b3(d,B.Es,B.l,d,d,new A.br(B.a8,d,A.ev(B.C.b9(0.5),1.5),b,A.a([new A.cR(2,B.bD,B.C.b9(0.08),B.h,16)],t.sq),d,B.F),d,72,d,d,d,d,72)
-s=e.xZ("Version","1.1.1",B.C)
+s=e.xZ("Version","1.1.2",B.C)
 r=e.QO("Package","com.forgeVII.kit85",B.P,!0)
 q=e.xZ("Developer","forgeVII",B.Z)
 p=e.xZ("App","KIT85",B.I)
@@ -89681,7 +89681,7 @@ for(l=["Tube-light startup animation","Full 8085 CPU emulation","Assembly langua
 i=new A.ar(B.U,1,B.r,-1)
 m.push(A.b3(d,A.aA(l[k],d,d,d,d,d,B.cR,d,d),B.l,d,d,new A.br(B.a8,d,new A.cy(i,i,i,i),new A.c9(j,j,j,j),d,d,B.F),d,d,d,B.oD,d,d,d))}m=A.Dn(m,B.eD,6,6)
 l=A.aA("BUILD INFO",d,d,d,d,d,B.mn,d,d)
-j=e.xZ("Build version","1.1.1",B.C)
+j=e.xZ("Build version","1.1.2",B.C)
 h=A.aA("LICENSE",d,d,d,d,d,B.mn,d,d)
 g=A.b2(6)
 f=A.ev(B.U,1)
@@ -89995,7 +89995,7 @@ return s==null?0:s},
 $S:67}
 A.air.prototype={
 $1(a){var s,r,q,p=null,o=A.b2(12),n=t.p,m=A.ce(A.a([B.IC,B.bf,A.aA("Update Available",p,p,p,p,p,B.Xb,p,p)],n),B.v,B.q,B.x),l=t.VO
-l=A.a([A.uF(p,p,p,B.b7,p,p,!0,p,A.cw(A.a([B.UD,A.cw(p,p,p,p,p,p,p,p,p,B.Ym,"v1.1.1")],l),p,p,p,p,p,p,p,p,p,p),B.ao,p,p,B.at,B.ai),B.Tp,A.uF(p,p,p,B.b7,p,p,!0,p,A.cw(A.a([B.UE,A.cw(p,p,p,p,p,p,p,p,p,B.Y0,"v"+this.a)],l),p,p,p,p,p,p,p,p,p,p),B.ao,p,p,B.at,B.ai)],n)
+l=A.a([A.uF(p,p,p,B.b7,p,p,!0,p,A.cw(A.a([B.UD,A.cw(p,p,p,p,p,p,p,p,p,B.Ym,"v1.1.2")],l),p,p,p,p,p,p,p,p,p,p),B.ao,p,p,B.at,B.ai),B.Tp,A.uF(p,p,p,B.b7,p,p,!0,p,A.cw(A.a([B.UE,A.cw(p,p,p,p,p,p,p,p,p,B.Y0,"v"+this.a)],l),p,p,p,p,p,p,p,p,p,p),B.ao,p,p,B.at,B.ai)],n)
 s=this.b
 r=s.length
 if(r!==0){q=A.b2(6)
