@@ -12,7 +12,7 @@ assemble, and run 8085 assembly programs in a student-friendly workflow.
 
 Web is now available and can be used on any platform (desktop, tablet, or mobile browser).
 
-## What's New in v1.1.0
+## What's New in v1.1.1
 
 - Converter input hardening:
 	- DEC/BIN/OCT/HEX now reject invalid characters while typing.
@@ -52,7 +52,8 @@ flutter run -d chrome
 - When program bytes are loaded from ASM, disassembly is ASM-guided.
 - Known instruction-start addresses are decoded as instructions.
 - Other addresses are shown as DATA to avoid false opcode interpretation.
-- In manual-only memory sessions (no ASM metadata), disassembly falls back to linear decoding.
+- In manual-only memory sessions, disassembly becomes execution-guided after GO + DOT/SI (executed start addresses are treated as code; other bytes remain DATA).
+- Status bar shows `MANUAL-CODEMAP ON` when this manual execution map is active.
 
 ## Android release signing
 
@@ -106,7 +107,7 @@ The web app is published under:
 
 The current web build is cross-platform and ready for use on any device with a modern browser.
 
-Landing page version: v1.1.0
+Landing page version: v1.1.1
 
 Build and stage a web release into `docs/app`:
 

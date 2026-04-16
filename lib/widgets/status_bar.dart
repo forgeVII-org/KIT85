@@ -50,20 +50,39 @@ class KitStatusBar extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.4)),
         ]),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-          decoration: BoxDecoration(
-            color: kSurface,
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: kBorder),
+        Row(children: [
+          if (s.manualCodemapOn)
+            Container(
+              margin: const EdgeInsets.only(right: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+              decoration: BoxDecoration(
+                color: kBlue.withValues(alpha: 0.15),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: kBlue.withValues(alpha: 0.45)),
+              ),
+              child: const Text('MANUAL-CODEMAP ON',
+                  style: TextStyle(
+                      color: kBlueBright,
+                      fontSize: 10,
+                      letterSpacing: 0.9,
+                      fontFamily: kMono,
+                      fontWeight: FontWeight.w700)),
+            ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+            decoration: BoxDecoration(
+              color: kSurface,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: kBorder),
+            ),
+            child: Text(modeStr,
+                style: const TextStyle(
+                    color: kTextDim,
+                    fontSize: 10,
+                    letterSpacing: 0.9,
+                    fontFamily: kMono)),
           ),
-          child: Text(modeStr,
-              style: const TextStyle(
-                  color: kTextDim,
-                  fontSize: 10,
-                  letterSpacing: 0.9,
-                  fontFamily: kMono)),
-        ),
+        ]),
       ]),
     );
   }

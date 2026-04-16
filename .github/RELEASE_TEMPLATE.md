@@ -1,4 +1,4 @@
-## KIT85 v1.1.0
+## KIT85 v1.1.1
 
 ### Highlights
 - Stronger converter input validation and bit limits
@@ -23,7 +23,7 @@
 
 ### Artifacts
 - app-release.apk
-- kit85-web-v1.1.0.zip
+- kit85-web-v1.1.1.zip
 
 ### Web
 - Live URL: https://forgevii-org.github.io/KIT85/app/

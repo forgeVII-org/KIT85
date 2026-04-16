@@ -118,7 +118,8 @@ class ManualSheet extends StatelessWidget {
                       'Shows nearby decoded instructions around current address.',
                       'Current row is highlighted; long-press a row to jump address pointer there.',
                       'When code is loaded from ASM, disasm uses assembled instruction boundaries and shows non-code bytes as DATA.',
-                      'If memory is edited manually without ASM metadata, disasm falls back to linear decoding.',
+                      'In manual sessions, GO + DOT/SI builds an execution-guided code map: executed starts decode as code, other bytes stay DATA.',
+                      'Status bar shows MANUAL-CODEMAP ON when this manual map is active.',
                     ]),
                     _sec('TOOLS / UTILITIES', [
                       'Opcode Table: two tabs (LIST and GRID) for quick mnemonic-to-opcode reference.',

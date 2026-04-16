@@ -48,6 +48,7 @@ class KitScreenState extends State<KitScreen> {
   String asmError = '';
   int asmOrigin = 0x2000;
   final Set<int> asmInstrStarts = <int>{};
+  final Set<int> manualInstrStarts = <int>{};
 
   List<Map<String, dynamic>> disasmCache = [];
   int lastDisasmAddr = -1;
@@ -94,6 +95,22 @@ class KitScreenState extends State<KitScreen> {
   }
 
   void invalidateDisasm() => lastDisasmAddr = -1;
+
+  Set<int> get _activeInstrStarts =>
+      asmInstrStarts.isNotEmpty ? asmInstrStarts : manualInstrStarts;
+
+  bool get manualCodemapOn =>
+      asmInstrStarts.isEmpty && manualInstrStarts.isNotEmpty;
+
+  void _clearManualInstrStarts() {
+    manualInstrStarts.clear();
+  }
+
+  void _markExecutedInstrStart(int addr) {
+    if (asmInstrStarts.isEmpty) {
+      manualInstrStarts.add(addr & 0xFFFF);
+    }
+  }
 
   // ── register helpers ──────────────────────────────────────────────────────
   int getRegVal(RegView r) {
@@ -235,6 +252,7 @@ class KitScreenState extends State<KitScreen> {
     dataBuf = 0;
     _cancelFlows();
     _memActive = false;
+    _clearManualInstrStarts();
     setState(() => _s('RESET',
         ks: KitState.idle, aOn: false, dOn: false, exec: false, sh: false));
   }
@@ -257,6 +275,7 @@ class KitScreenState extends State<KitScreen> {
         }
         cpu.pc = addrBuf;
         cpu.halted = false;
+        _markExecutedInstrStart(cpu.pc);
         final cont = cpu.step();
         addrBuf = cpu.pc;
         dataBuf = cpu.mem[addrBuf];
@@ -296,6 +315,7 @@ class KitScreenState extends State<KitScreen> {
           _s('INS', ks: KitState.idle, dOn: true);
         } else {
           cpu.mem[addrBuf] = dataBuf;
+          _clearManualInstrStarts();
           addrBuf = (addrBuf + 1) & 0xFFFF;
           dataBuf = cpu.mem[addrBuf];
           _s('INS', dOn: true);
@@ -331,6 +351,7 @@ class KitScreenState extends State<KitScreen> {
         }
         cpu.pc = _vctAddr;
         cpu.halted = false;
+        _markExecutedInstrStart(cpu.pc);
         final cont = cpu.step();
         addrBuf = cpu.pc;
         dataBuf = cpu.mem[addrBuf];
@@ -354,7 +375,17 @@ class KitScreenState extends State<KitScreen> {
     setState(() {
       cpu.pc = addrBuf;
       cpu.halted = false;
-      cpu.run();
+      if (asmInstrStarts.isEmpty) {
+        _clearManualInstrStarts();
+      }
+      int steps = 0;
+      while (!cpu.halted && steps < 100000) {
+        _markExecutedInstrStart(cpu.pc);
+        final cont = cpu.step();
+        steps++;
+        if (!cont) break;
+      }
+      cpu.lastRunSteps = steps;
       _s('${cpu.halted ? 'HALT' : 'DONE'} (${cpu.lastRunSteps})',
           ks: KitState.idle, aOn: false, dOn: false, exec: true);
       _hMedium();
@@ -390,6 +421,7 @@ class KitScreenState extends State<KitScreen> {
           _s('DATA>', ks: KitState.idle, aOn: true, dOn: true, exec: false);
         } else if (_memActive) {
           cpu.mem[addrBuf] = dataBuf;
+          _clearManualInstrStarts();
           addrBuf = (addrBuf + 1) & 0xFFFF;
           dataBuf = cpu.mem[addrBuf];
           _s('NEXT', aOn: true, dOn: true);
@@ -416,6 +448,7 @@ class KitScreenState extends State<KitScreen> {
           return;
         }
         cpu.mem[addrBuf] = dataBuf;
+        _clearManualInstrStarts();
         addrBuf = (addrBuf - 1) & 0xFFFF;
         dataBuf = cpu.mem[addrBuf];
         _s('PRE', aOn: true, dOn: true, exec: false);
@@ -490,6 +523,7 @@ class KitScreenState extends State<KitScreen> {
         for (int i = from; i <= to; i++) {
           cpu.mem[i & 0xFFFF] = val;
         }
+        _clearManualInstrStarts();
         _fillStep = 0;
         addrBuf = from;
         dataBuf = val;
@@ -529,6 +563,7 @@ class KitScreenState extends State<KitScreen> {
         for (int i = 0; i < len; i++) {
           cpu.mem[(dst + i) & 0xFFFF] = cpu.mem[(_bmSrc + i) & 0xFFFF];
         }
+        _clearManualInstrStarts();
         _bmStep = 0;
         addrBuf = dst;
         dataBuf = cpu.mem[dst];
@@ -1139,7 +1174,8 @@ class KitScreenState extends State<KitScreen> {
 
   int _entrySizeAt(int addr) {
     final op = cpu.mem[addr & 0xFFFF];
-    if (asmInstrStarts.isNotEmpty && !asmInstrStarts.contains(addr & 0xFFFF)) {
+    final starts = _activeInstrStarts;
+    if (starts.isNotEmpty && !starts.contains(addr & 0xFFFF)) {
       return 1;
     }
     return _opSize(op);
@@ -1147,11 +1183,12 @@ class KitScreenState extends State<KitScreen> {
 
   int _entryStartForAnchor(int anchor) {
     final a = anchor & 0xFFFF;
-    if (asmInstrStarts.isEmpty) return a;
-    if (asmInstrStarts.contains(a)) return a;
+    final starts = _activeInstrStarts;
+    if (starts.isEmpty) return a;
+    if (starts.contains(a)) return a;
     for (int back = 1; back <= 2; back++) {
       final cand = (a - back) & 0xFFFF;
-      if (!asmInstrStarts.contains(cand)) continue;
+      if (!starts.contains(cand)) continue;
       if (cand + _entrySizeAt(cand) > a) return cand;
     }
     return a;
@@ -1159,14 +1196,15 @@ class KitScreenState extends State<KitScreen> {
 
   int _prevEntryStart(int entryStart) {
     final s = entryStart & 0xFFFF;
-    if (asmInstrStarts.isEmpty) {
+    final starts = _activeInstrStarts;
+    if (starts.isEmpty) {
       final prev = (s - 1).clamp(0, 0xFFFF);
       return prev;
     }
     for (int back = 3; back >= 1; back--) {
       final cand = s - back;
       if (cand < 0) continue;
-      if (!asmInstrStarts.contains(cand)) continue;
+      if (!starts.contains(cand)) continue;
       if (cand + _entrySizeAt(cand) == s) return cand;
     }
     return (s - 1).clamp(0, 0xFFFF);
@@ -1175,8 +1213,9 @@ class KitScreenState extends State<KitScreen> {
   Map<String, dynamic> _disasmEntry(int addr) {
     final a = addr & 0xFFFF;
     final op = cpu.mem[a];
-    final isKnownCode = asmInstrStarts.isNotEmpty && asmInstrStarts.contains(a);
-    final canDecodeAsCode = asmInstrStarts.isEmpty || isKnownCode;
+    final starts = _activeInstrStarts;
+    final isKnownCode = starts.isNotEmpty && starts.contains(a);
+    final canDecodeAsCode = starts.isEmpty || isKnownCode;
     final raw = canDecodeAsCode ? disasmOp(op) : '';
 
     String line;

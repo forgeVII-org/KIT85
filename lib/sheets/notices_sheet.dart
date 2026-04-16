@@ -85,11 +85,8 @@ class NoticesSheet extends StatelessWidget {
                     kBlueBright,
                     'Manual edits are still allowed',
                     'Memory bytes can always be edited in KIT mode. Bytes outside known ASM instruction starts are intentionally displayed as DATA to avoid false opcode decoding.'),
-                _notice(
-                    Icons.info_outline,
-                    kBlueBright,
-                    'Linear fallback still exists',
-                    'If memory was not loaded from ASM metadata, disasm falls back to linear decoding behavior.'),
+                _notice(Icons.info_outline, kBlueBright, 'Manual code-map mode',
+                    'Without ASM metadata, GO + DOT/SI marks executed instruction starts for decode while other bytes remain DATA. Status bar shows MANUAL-CODEMAP ON.'),
               ]),
               _section('KIT OPERATION REMINDERS', kBlueBright, [
                 _notice(
