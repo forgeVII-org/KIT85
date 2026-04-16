@@ -72,7 +72,7 @@ HLT
   ),
   SampleProgram(
     name: 'Subtract Two 16-bit Numbers',
-    description: 'Subtracts two 16-bit values and stores result',
+    description: 'Subtracts two 16-bit values and stores result + borrow',
     code: '''; [2800H..2801H] - [2802H..2803H]
 ORG 2500H
 
@@ -86,6 +86,10 @@ STA 2804H
 MOV A, D
 SBB H
 STA 2805H
+JNC SKIP
+MVI C, 01H
+SKIP: MOV A, C
+STA 2806H
 HLT
 ''',
   ),

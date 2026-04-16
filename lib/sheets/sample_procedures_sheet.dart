@@ -66,13 +66,14 @@ const _sampleProcedureByName = <String, _SampleProcedureInfo>{
   ),
   'Subtract Two 16-bit Numbers': _SampleProcedureInfo(
     inputs: ['2800H..2801H = minuend', '2802H..2803H = subtrahend'],
-    outputs: ['2804H..2805H = difference'],
+    outputs: ['2804H..2805H = difference', '2806H = borrow flag (00/01)'],
     exampleInput: [
       _AddrValue('2800H..2801H', '1234H'),
       _AddrValue('2802H..2803H', '0102H'),
     ],
     exampleOutput: [
       _AddrValue('2804H..2805H', '1132H'),
+      _AddrValue('2806H', '00H'),
     ],
   ),
   'Multiply Two 8-bit Numbers': _SampleProcedureInfo(
