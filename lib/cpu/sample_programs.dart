@@ -76,21 +76,28 @@ HLT
     code: '''; [2800H..2801H] - [2802H..2803H]
 ORG 2500H
 
-MVI C, 00H
-LHLD 2800H
-XCHG
-LHLD 2802H
-MOV A, E
-SUB L
-STA 2804H
-MOV A, D
-SBB H
-STA 2805H
-JNC SKIP
-MVI C, 01H
-SKIP: MOV A, C
-STA 2806H
-HLT
+  MVI C, 00H      ; Assume borrow = 0
+
+  LHLD 2800H      ; HL = First number
+  XCHG            ; DE = First number
+
+  LHLD 2802H      ; HL = Second number
+
+  MOV A, E        ; A = LSB of first number
+  SUB L           ; A = A - LSB of second number
+  STA 2804H       ; Store LSB result
+
+  MOV A, D        ; A = MSB of first number
+  SBB H           ; A = A - MSB of second number with borrow
+  STA 2805H       ; Store MSB result
+
+  JNC SKIP        ; If no borrow, skip next
+  MVI C, 01H      ; Borrow occurred
+
+  SKIP: MOV A, C
+  STA 2806H       ; Store borrow (00 or 01)
+
+  HLT             ; Stop
 ''',
   ),
   SampleProgram(

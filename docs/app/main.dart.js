@@ -851,7 +851,7 @@ p.a5A()
 return p},
 aLG(a){return new A.a3b($.an,a)},
 aws(){var s,r,q,p,o=v.G,n=o.window,m=A.aLe(n.navigator)
-if(m==null||m.length===0)return B.pR
+if(m==null||m.length===0)return B.pQ
 s=A.a([],t.ss)
 for(n=m.length,r=0;r<m.length;m.length===n||(0,A.A)(m),++r){q=m[r]
 p=new o.Intl.Locale(q)
@@ -7069,8 +7069,8 @@ s=B.d.co((a-2)/1,0,13)
 r=B.e.co(B.d.h1(s),0,12)
 q=s-r
 p=1-q
-o=B.pW[r]
-n=B.pW[r+1]
+o=B.pV[r]
+n=B.pV[r+1]
 return new A.a3(p*o.a+q*n.a,p*o.b+q*n.b)},
 aQC(a){var s,r,q,p,o,n,m
 if(a>5){s=a-5
@@ -10911,8 +10911,8 @@ break
 case 4:s=l.a
 s===$&&A.b()
 s=A.bu(s,200)
-r=A.bu(A.a20(l,B.pS,B.Kf),24)
-q=A.bu(A.a20(l,B.pS,B.L2),32)
+r=A.bu(A.a20(l,B.pR,B.Kf),24)
+q=A.bu(A.a20(l,B.pR,B.L2),32)
 p=A.bu(l.a,10)
 o=A.bu(l.a,12)
 l.d===$&&A.b()
@@ -10922,8 +10922,8 @@ break
 case 5:s=l.a
 s===$&&A.b()
 s=A.bu(A.A5(s+240),40)
-r=A.bu(A.a20(l,B.pU,B.LN),24)
-q=A.bu(A.a20(l,B.pU,B.LO),32)
+r=A.bu(A.a20(l,B.pT,B.LN),24)
+q=A.bu(A.a20(l,B.pT,B.LO),32)
 p=A.bu(l.a+15,8)
 o=A.bu(l.a+15,12)
 l.d===$&&A.b()
@@ -11388,7 +11388,7 @@ aAP(a,b,c){if(b!=null&&!b.j(0,B.F))return A.awb(b.b8(A.aLB(c)),a)
 return a},
 aLB(a){var s,r,q,p,o,n
 if(a<0)return 0
-for(s=0;r=B.pT[s],q=r.a,a>=q;){if(a===q||s+1===6)return r.b;++s}p=B.pT[s-1]
+for(s=0;r=B.pS[s],q=r.a,a>=q;){if(a===q||s+1===6)return r.b;++s}p=B.pS[s-1]
 o=p.a
 n=p.b
 return n+(a-o)/(q-o)*(r.b-n)},
@@ -37949,11 +37949,11 @@ gZ5(){var s=this.a
 if(s instanceof A.eZ)return s
 return this.a=new A.eZ(s)},
 gauE(){var s,r,q,p,o,n=this
-if(n.c===1)return B.pY
+if(n.c===1)return B.pX
 s=n.d
 r=J.bh(s)
 q=r.gE(s)-J.bT(n.e)-n.f
-if(q===0)return B.pY
+if(q===0)return B.pX
 p=[]
 for(o=0;o<q;++o)p.push(r.h(s,o))
 p.$flags=3
@@ -47171,7 +47171,7 @@ n=o.e
 o=o.cx
 r=q.gaeo()
 q.a.toString
-return new A.Dl(p,p,p,new A.aov(),p,p,p,p,p,n,B.NJ,p,p,p,B.Lf,q.gaev(),o,p,B.X6,s,p,r,p,p,B.pR,!1,!1,p,p,p,new A.p8(q,t.bT))},
+return new A.Dl(p,p,p,new A.aov(),p,p,p,p,p,n,B.NJ,p,p,p,B.Lf,q.gaev(),o,p,B.X6,s,p,r,p,p,B.pQ,!1,!1,p,p,p,new A.p8(q,t.bT))},
 L(a){var s,r=this.a6X(a)
 this.a.toString
 s=this.d
@@ -59633,8 +59633,8 @@ s=r.U
 r.ez=s==null?null:s.gwI()
 a.a=!1},
 oo(a,b,c){var s,r,q,p,o=this
-o.kL=A.aCD(o.kL,B.pZ)
-o.iB=A.aCD(o.iB,B.pZ)
+o.kL=A.aCD(o.kL,B.pY)
+o.iB=A.aCD(o.iB,B.pY)
 s=o.kL
 r=s!=null&&!s.gae(s)
 s=o.iB
@@ -66371,7 +66371,7 @@ if(e.R*e.M===0){s=b.a
 r=b.b
 q=e.bq
 q===$&&A.b()
-e.F.Zn(a.gcb(),new A.q(s,r,s+q,r+0),B.q_,B.q_)
+e.F.Zn(a.gcb(),new A.q(s,r,s+q,r+0),B.pZ,B.pZ)
 return}if(e.I!=null){p=a.gcb()
 for(s=e.aq,r=b.a,q=b.b,o=e.gdI(),n=0;n<e.R;++n){m=e.I
 if(m.length<=n)break
@@ -85313,8 +85313,8 @@ h=i.c
 f=h.length
 e=A.a(new Array(f),k)
 for(d=0;d<f;++d)e[d]=new A.wy(d,j)
-m.push(new A.fZ(null,c.a_x(g,h,l,e)))}while(n.v())c.Cn(q.gN().b,B.pX,l)
-for(q=new A.b6(r,r.$ti.i("b6<2>")).ga6(0),s=new A.k3(q,new A.ass(A.ay(s)));s.v();)c.Cn(q.gN(),B.pX,l)
+m.push(new A.fZ(null,c.a_x(g,h,l,e)))}while(n.v())c.Cn(q.gN().b,B.pW,l)
+for(q=new A.b6(r,r.$ti.i("b6<2>")).ga6(0),s=new A.k3(q,new A.ass(A.ay(s)));s.v();)c.Cn(q.gN(),B.pW,l)
 c.p1=m
 c.Us()
 l.a4(0)
@@ -89867,7 +89867,7 @@ A.adX.prototype={
 $2(a,b){return A.aAG(B.U.bb(0.7),1)},
 $S:207}
 A.adW.prototype={
-$2(a,b){var s,r,q,p,o,n,m=null,l=B.pQ[b],k=l.a,j=B.NE.h(0,k),i=A.N(this.b).ana(B.F)
+$2(a,b){var s,r,q,p,o,n,m=null,l=B.q_[b],k=l.a,j=B.NE.h(0,k),i=A.N(this.b).ana(B.F)
 k=A.aA(k,m,m,m,m,m,B.BC,m,m)
 s=A.aA(l.b,m,m,m,m,m,B.BA,m,m)
 r=this.a
@@ -90159,7 +90159,7 @@ A.ajU.prototype={
 $2(a,b){return A.aAG(B.U.bb(0.7),1)},
 $S:207}
 A.ajT.prototype={
-$2(a,b){var s=this,r=null,q=b>=18,p=q?s.a.w[b-18]:B.pQ[b],o=s.a,n=s.b,m=A.aA(p.a,r,r,r,r,r,A.c7(r,r,q?B.Z:B.a1,r,r,r,r,r,"monospace",r,r,12,r,r,B.w,r,r,!0,r,r,r,r,r,r,r,r),r,r)
+$2(a,b){var s=this,r=null,q=b>=18,p=q?s.a.w[b-18]:B.q_[b],o=s.a,n=s.b,m=A.aA(p.a,r,r,r,r,r,A.c7(r,r,q?B.Z:B.a1,r,r,r,r,r,"monospace",r,r,12,r,r,B.w,r,r,!0,r,r,r,r,r,r,r,r),r,r)
 return A.eA(r,A.jA(!1,r,!0,r,!0,r,r,r,!0,r,r,r,r,r,r,new A.ajR(o,n,p),!1,r,r,r,r,A.aA(p.b,r,r,r,r,r,B.cR,r,r),r,m,r,r),B.L,!1,r,r,r,r,r,r,r,new A.ajS(o,n,p,q,s.c),r,r,r,r,r,r,r,r,r,r,r,r,r)},
 $S:571}
 A.ajS.prototype={
@@ -96154,25 +96154,6 @@ B.pP=s([B.Ko,B.Jt,B.Lv,B.LA,B.Kc,B.Ki,B.KU,B.Kv,B.KL,B.Kg,B.Kp],t.zg)
 B.Kb=s([B.jG,B.jH],A.at("B<xt>"))
 B.Kf=s([18,15,10,12,15,18,15,12,12],t.n)
 B.Kk=s([1116352408,1899447441,3049323471,3921009573,961987163,1508970993,2453635748,2870763221,3624381080,310598401,607225278,1426881987,1925078388,2162078206,2614888103,3248222580,3835390401,4022224774,264347078,604807628,770255983,1249150122,1555081692,1996064986,2554220882,2821834349,2952996808,3210313671,3336571891,3584528711,113926993,338241895,666307205,773529912,1294757372,1396182291,1695183700,1986661051,2177026350,2456956037,2730485921,2820302411,3259730800,3345764771,3516065817,3600352804,4094571909,275423344,430227734,506948616,659060556,883997877,958139571,1322822218,1537002063,1747873779,1955562222,2024104815,2227730452,2361852424,2428436474,2756734187,3204031479,3329325298],t.t)
-B.QZ=new A.dp("Add Two 8-bit Numbers","Adds two 8-bit values and stores sum + carry","; [2300H] + [2301H] -> sum at 2302H, carry at 2303H\nORG 2100H\n\nMVI C, 00H\nLDA 2300H\nMOV B, A\nLDA 2301H\nADD B\nJNC SKIP\nINR C\nSKIP: STA 2302H\nMOV A, C\nSTA 2303H\nHLT\n")
-B.QY=new A.dp("Subtract Two 8-bit Numbers","Subtracts two 8-bit values and stores result + borrow","; [2300H] - [2301H] -> result at 2302H, borrow at 2303H\nORG 2100H\n\nMVI C, 00H\nLDA 2300H\nMOV B, A\nLDA 2301H\nSUB B\nJC SKIP\nINR C\nSKIP: CMA\nADI 01H\nSTA 2302H\nMOV A, C\nSTA 2303H\nHLT\n")
-B.R2=new A.dp("Add Two 16-bit Numbers","Adds two 16-bit values and stores sum + carry","; [2800H..2801H] + [2802H..2803H]\nORG 2500H\n\nMVI C, 00H\nLHLD 2800H\nXCHG\nLHLD 2802H\nDAD D\nJNC AHEAD\nINR C\nAHEAD: SHLD 2804H\nMOV A, C\nSTA 2806H\nHLT\n")
-B.R6=new A.dp("Subtract Two 16-bit Numbers","Subtracts two 16-bit values and stores result + borrow","; [2800H..2801H] - [2802H..2803H]\nORG 2500H\n\nMVI C, 00H\nLHLD 2800H\nXCHG\nLHLD 2802H\nMOV A, E\nSUB L\nSTA 2804H\nMOV A, D\nSBB H\nSTA 2805H\nJNC SKIP\nMVI C, 01H\nSKIP: MOV A, C\nSTA 2806H\nHLT\n")
-B.R0=new A.dp("Multiply Two 8-bit Numbers","Multiplies two 8-bit values via repeated addition","; [2500H] * [2501H] -> low at 2502H, high at 2503H\nORG 2100H\n\nLDA 2500H\nMOV B, A\nLDA 2501H\nMOV C, A\nMVI A, 00H\nMVI D, 00H\nLOOP: ADD B\nJNC SKIP\nINR D\nSKIP: DCR C\nJNZ LOOP\nSTA 2502H\nMOV A, D\nSTA 2503H\nHLT\n")
-B.R8=new A.dp("Divide Two 8-bit Numbers","Divides two 8-bit values, stores quotient and remainder","; [2500H] / [2501H] -> quotient at 2503H, remainder at 2502H\nORG 2100H\n\nMVI C, 00H\nLDA 2500H\nMOV D, A\nLDA 2501H\nMOV B, A\nMOV A, D\nLOOP2: CMP B\nJC LOOP1\nSUB B\nINR C\nJMP LOOP2\nLOOP1: STA 2502H\nMOV A, C\nSTA 2503H\nHLT\n")
-B.QX=new A.dp("Multiply Two 16-bit Numbers","Multiplies two 16-bit values via repeated addition","; [2200H..2201H] * [2202H..2203H]\nORG 2100H\n\nLHLD 2200H\nSPHL\nLHLD 2202H\nXCHG\nLXI H, 0000H\nLXI B, 0000H\nNEXT: DAD SP\nJNC LOOP\nINX B\nLOOP: DCX D\nMOV A, E\nORA D\nJNZ NEXT\nSHLD 2204H\nMOV L, C\nMOV H, B\nSHLD 2206H\nHLT\n")
-B.R_=new A.dp("Divide Two 16-bit Numbers","Divides two 16-bit values, stores quotient and remainder","; [2800H..2801H] / [2802H..2803H]\nORG 2500H\n\nLXI B, 0000H\nLHLD 2802H\nXCHG\nLHLD 2800H\nLOOP2: MOV A, L\nSUB E\nMOV L, A\nMOV A, H\nSBB D\nMOV H, A\nJC LOOP1\nINX B\nJMP LOOP2\nLOOP1: DAD D\nSHLD 2806H\nMOV L, C\nMOV H, B\nSHLD 2804H\nHLT\n")
-B.R9=new A.dp("Counter (0-255)","Counts from 0 to 255 in register A","; Count upward in A until it overflows back to 00H\nORG 2000H\n\nMVI A, 00H\nCOUNT_LOOP: INR A\nJNZ COUNT_LOOP\nHLT\n")
-B.R7=new A.dp("Add Two Numbers","Adds B and C registers, stores result in A","; Add two values using registers B and C\nORG 2000H\n\nMVI B, 14H\nMVI C, 28H\nMOV A, B\nADD C\nSTA 2100H\nHLT\n")
-B.Rd=new A.dp("Factorial (5!)","Calculate factorial of 5","; Compute 5! and store the result at 2100H\nORG 2000H\n\nMVI B, 05H      ; B = n\nMVI A, 01H      ; A = running result\nFACT_LOOP: MOV C, B\nCALL MUL_A_BY_C ; A = A * B\nDCR B\nMOV E, A\nMOV A, B\nCPI 01H\nMOV A, E\nJNZ FACT_LOOP\nSTA 2100H\nHLT\n\nMUL_A_BY_C: MOV D, A\nMVI A, 00H\nMUL_LOOP: ADD D\nDCR C\nJNZ MUL_LOOP\nRET\n")
-B.R3=new A.dp("Clear Memory Block","Clears 16 bytes starting at 2100H","; Fill 2100H..210FH with 00H\nORG 2000H\n\nLXI H, 2100H\nMVI B, 10H\nCLEAR_LOOP: MVI M, 00H\nINX H\nDCR B\nJNZ CLEAR_LOOP\nHLT\n")
-B.R4=new A.dp("Rotate Register A","Rotates A register left 4 times","; Rotate A to the left four times\nORG 2000H\n\nMVI A, 96H\nMVI B, 04H\nROT_LOOP: RLC\nDCR B\nJNZ ROT_LOOP\nHLT\n")
-B.Rb=new A.dp("Compare and Jump","Compares A with B, jumps based on result","; Compare A and B and set C as relation code\n; 01H = A>B, 02H = A<B, 03H = A==B\nORG 2000H\n\nMVI A, 2AH\nMVI B, 30H\nCMP B\nJC LESS_THAN\nJZ EQUAL_TO\nMVI C, 01H\nJMP DONE\nLESS_THAN: MVI C, 02H\nJMP DONE\nEQUAL_TO: MVI C, 03H\nDONE: HLT\n")
-B.Ra=new A.dp("Stack Operations","Demonstrates PUSH and POP","; Push BC onto stack, then pop into DE\nORG 2000H\n\nLXI SP, 2400H\nMVI B, 12H\nMVI C, 34H\nPUSH B\nMVI B, 00H\nMVI C, 00H\nPOP D\nHLT\n")
-B.Rc=new A.dp("Copy Memory Block","Copies 8 bytes from 2100H to 2110H","; Copy bytes from source block (HL) to destination (DE)\nORG 2000H\n\nLXI H, 2100H\nLXI D, 2110H\nMVI B, 08H\nCOPY_LOOP: MOV A, M\nSTAX D\nINX H\nINX D\nDCR B\nJNZ COPY_LOOP\nHLT\n")
-B.R1=new A.dp("Binary to BCD","Converts binary to BCD format","; Convert value in A to decimal digits by repeated subtraction\n; Stores hundreds at 2200H, tens at 2201H, ones at 2202H\nORG 2000H\n\nMVI A, 99H\nMVI B, 00H\nMVI C, 00H\nHUND_LOOP: CPI 64H\nJC TENS_LOOP\nSUI 64H\nINR B\nJMP HUND_LOOP\nTENS_LOOP: CPI 0AH\nJC BCD_DONE\nSUI 0AH\nINR C\nJMP TENS_LOOP\nBCD_DONE: STA 2202H\nMOV A, C\nSTA 2201H\nMOV A, B\nSTA 2200H\nHLT\n")
-B.R5=new A.dp("Call Subroutine","Demonstrates CALL and RET","; Call a subroutine that adds B into A\nORG 2000H\n\nMVI A, 15H\nMVI B, 27H\nCALL ADD_SUB\nSTA 2300H\nHLT\n\nADD_SUB: ADD B\nRET\n")
-B.pQ=s([B.QZ,B.QY,B.R2,B.R6,B.R0,B.R8,B.QX,B.R_,B.R9,B.R7,B.Rd,B.R3,B.R4,B.Rb,B.Ra,B.Rc,B.R1,B.R5],t.Xk)
 B.fl=s(["B","C","D","E","H","L","M","A"],t.s)
 B.b0=new A.eI(0,"icon")
 B.b8=new A.eI(1,"input")
@@ -96198,8 +96179,8 @@ B.iw=new A.hq(8,"pc")
 B.QP=new A.hq(9,"flags")
 B.fm=s([B.A2,B.QJ,B.QK,B.QL,B.QM,B.QN,B.QO,B.lJ,B.iw,B.QP],A.at("B<hq>"))
 B.M2=new A.kW("en",null,"US")
-B.pR=s([B.M2],t.ss)
-B.pS=s([0,41,61,101,131,181,251,301,360],t.n)
+B.pQ=s([B.M2],t.ss)
+B.pR=s([0,41,61,101,131,181,251,301,360],t.n)
 B.mp=new A.j(!0,B.a1,null,"monospace",null,null,10,B.w,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.a_f=new A.b8("MNEMONIC",null,B.mp,null,null,null,null,null,null,null,null)
 B.Hy=new A.ml(4,B.e4,B.a_f,null)
@@ -96214,8 +96195,8 @@ B.a1D=new A.lH(3,0.08)
 B.a1E=new A.lH(6,0.11)
 B.a1C=new A.lH(8,0.12)
 B.a1B=new A.lH(12,0.14)
-B.pT=s([B.a1A,B.a1F,B.a1D,B.a1E,B.a1C,B.a1B],A.at("B<lH>"))
-B.pU=s([0,21,51,121,151,191,271,321,360],t.n)
+B.pS=s([B.a1A,B.a1F,B.a1D,B.a1E,B.a1C,B.a1B],A.at("B<lH>"))
+B.pT=s([0,21,51,121,151,191,271,321,360],t.n)
 B.CI=new A.IT(2,"outer")
 B.nV=new A.v(0.09803921568627451,0,0,0,B.f)
 B.h=new A.h(0,0)
@@ -96272,7 +96253,7 @@ B.QE=new A.a3(0.63903989,0.07759639)
 B.Ql=new A.a3(0.66416338,0.0734653)
 B.Qi=new A.a3(0.68675338,0.06974996)
 B.Qy=new A.a3(0.70678034,0.06529512)
-B.pW=s([B.QC,B.QB,B.Qo,B.Qr,B.QA,B.Qh,B.Qm,B.Qp,B.Qk,B.Qx,B.QE,B.Ql,B.Qi,B.Qy],A.at("B<+(D,D)>"))
+B.pV=s([B.QC,B.QB,B.Qo,B.Qr,B.QA,B.Qh,B.Qm,B.Qp,B.Qk,B.Qx,B.QE,B.Ql,B.Qi,B.Qy],A.at("B<+(D,D)>"))
 B.L2=s([35,30,20,25,30,35,30,25,25],t.n)
 B.L5=s(["click","scroll"],t.s)
 B.De=new A.rz()
@@ -96282,7 +96263,7 @@ B.L6=s([B.De,B.iB],A.at("B<aT>"))
 B.Lm=s([],t.QP)
 B.La=s([],t.sq)
 B.Lg=s([],t.Ug)
-B.pZ=s([],A.at("B<aVB>"))
+B.pY=s([],A.at("B<aVB>"))
 B.Lr=s([],t.D)
 B.Ld=s([],t.lX)
 B.Lp=s([],t.fJ)
@@ -96300,13 +96281,32 @@ B.Ls=s([],t.kO)
 B.a3a=s([],A.at("B<hx>"))
 B.Li=s([],t.Lx)
 B.Lq=s([],t.AS)
-B.pX=s([],t.p)
+B.pW=s([],t.p)
 B.Lc=s([],t.lD)
-B.q_=s([],t.n)
+B.pZ=s([],t.n)
 B.ld=s([],t.t)
-B.pY=s([],t.ee)
+B.pX=s([],t.ee)
 B.Lb=s([],t.iG)
 B.Lo=s([],t.XS)
+B.QZ=new A.dp("Add Two 8-bit Numbers","Adds two 8-bit values and stores sum + carry","; [2300H] + [2301H] -> sum at 2302H, carry at 2303H\nORG 2100H\n\nMVI C, 00H\nLDA 2300H\nMOV B, A\nLDA 2301H\nADD B\nJNC SKIP\nINR C\nSKIP: STA 2302H\nMOV A, C\nSTA 2303H\nHLT\n")
+B.QY=new A.dp("Subtract Two 8-bit Numbers","Subtracts two 8-bit values and stores result + borrow","; [2300H] - [2301H] -> result at 2302H, borrow at 2303H\nORG 2100H\n\nMVI C, 00H\nLDA 2300H\nMOV B, A\nLDA 2301H\nSUB B\nJC SKIP\nINR C\nSKIP: CMA\nADI 01H\nSTA 2302H\nMOV A, C\nSTA 2303H\nHLT\n")
+B.R3=new A.dp("Add Two 16-bit Numbers","Adds two 16-bit values and stores sum + carry","; [2800H..2801H] + [2802H..2803H]\nORG 2500H\n\nMVI C, 00H\nLHLD 2800H\nXCHG\nLHLD 2802H\nDAD D\nJNC AHEAD\nINR C\nAHEAD: SHLD 2804H\nMOV A, C\nSTA 2806H\nHLT\n")
+B.R_=new A.dp("Subtract Two 16-bit Numbers","Subtracts two 16-bit values and stores result + borrow","; [2800H..2801H] - [2802H..2803H]\nORG 2500H\n\n  MVI C, 00H      ; Assume borrow = 0\n\n  LHLD 2800H      ; HL = First number\n  XCHG            ; DE = First number\n\n  LHLD 2802H      ; HL = Second number\n\n  MOV A, E        ; A = LSB of first number\n  SUB L           ; A = A - LSB of second number\n  STA 2804H       ; Store LSB result\n\n  MOV A, D        ; A = MSB of first number\n  SBB H           ; A = A - MSB of second number with borrow\n  STA 2805H       ; Store MSB result\n\n  JNC SKIP        ; If no borrow, skip next\n  MVI C, 01H      ; Borrow occurred\n\n  SKIP: MOV A, C\n  STA 2806H       ; Store borrow (00 or 01)\n\n  HLT             ; Stop\n")
+B.R1=new A.dp("Multiply Two 8-bit Numbers","Multiplies two 8-bit values via repeated addition","; [2500H] * [2501H] -> low at 2502H, high at 2503H\nORG 2100H\n\nLDA 2500H\nMOV B, A\nLDA 2501H\nMOV C, A\nMVI A, 00H\nMVI D, 00H\nLOOP: ADD B\nJNC SKIP\nINR D\nSKIP: DCR C\nJNZ LOOP\nSTA 2502H\nMOV A, D\nSTA 2503H\nHLT\n")
+B.R8=new A.dp("Divide Two 8-bit Numbers","Divides two 8-bit values, stores quotient and remainder","; [2500H] / [2501H] -> quotient at 2503H, remainder at 2502H\nORG 2100H\n\nMVI C, 00H\nLDA 2500H\nMOV D, A\nLDA 2501H\nMOV B, A\nMOV A, D\nLOOP2: CMP B\nJC LOOP1\nSUB B\nINR C\nJMP LOOP2\nLOOP1: STA 2502H\nMOV A, C\nSTA 2503H\nHLT\n")
+B.QX=new A.dp("Multiply Two 16-bit Numbers","Multiplies two 16-bit values via repeated addition","; [2200H..2201H] * [2202H..2203H]\nORG 2100H\n\nLHLD 2200H\nSPHL\nLHLD 2202H\nXCHG\nLXI H, 0000H\nLXI B, 0000H\nNEXT: DAD SP\nJNC LOOP\nINX B\nLOOP: DCX D\nMOV A, E\nORA D\nJNZ NEXT\nSHLD 2204H\nMOV L, C\nMOV H, B\nSHLD 2206H\nHLT\n")
+B.R0=new A.dp("Divide Two 16-bit Numbers","Divides two 16-bit values, stores quotient and remainder","; [2800H..2801H] / [2802H..2803H]\nORG 2500H\n\nLXI B, 0000H\nLHLD 2802H\nXCHG\nLHLD 2800H\nLOOP2: MOV A, L\nSUB E\nMOV L, A\nMOV A, H\nSBB D\nMOV H, A\nJC LOOP1\nINX B\nJMP LOOP2\nLOOP1: DAD D\nSHLD 2806H\nMOV L, C\nMOV H, B\nSHLD 2804H\nHLT\n")
+B.R9=new A.dp("Counter (0-255)","Counts from 0 to 255 in register A","; Count upward in A until it overflows back to 00H\nORG 2000H\n\nMVI A, 00H\nCOUNT_LOOP: INR A\nJNZ COUNT_LOOP\nHLT\n")
+B.R7=new A.dp("Add Two Numbers","Adds B and C registers, stores result in A","; Add two values using registers B and C\nORG 2000H\n\nMVI B, 14H\nMVI C, 28H\nMOV A, B\nADD C\nSTA 2100H\nHLT\n")
+B.Rd=new A.dp("Factorial (5!)","Calculate factorial of 5","; Compute 5! and store the result at 2100H\nORG 2000H\n\nMVI B, 05H      ; B = n\nMVI A, 01H      ; A = running result\nFACT_LOOP: MOV C, B\nCALL MUL_A_BY_C ; A = A * B\nDCR B\nMOV E, A\nMOV A, B\nCPI 01H\nMOV A, E\nJNZ FACT_LOOP\nSTA 2100H\nHLT\n\nMUL_A_BY_C: MOV D, A\nMVI A, 00H\nMUL_LOOP: ADD D\nDCR C\nJNZ MUL_LOOP\nRET\n")
+B.R4=new A.dp("Clear Memory Block","Clears 16 bytes starting at 2100H","; Fill 2100H..210FH with 00H\nORG 2000H\n\nLXI H, 2100H\nMVI B, 10H\nCLEAR_LOOP: MVI M, 00H\nINX H\nDCR B\nJNZ CLEAR_LOOP\nHLT\n")
+B.R5=new A.dp("Rotate Register A","Rotates A register left 4 times","; Rotate A to the left four times\nORG 2000H\n\nMVI A, 96H\nMVI B, 04H\nROT_LOOP: RLC\nDCR B\nJNZ ROT_LOOP\nHLT\n")
+B.Rb=new A.dp("Compare and Jump","Compares A with B, jumps based on result","; Compare A and B and set C as relation code\n; 01H = A>B, 02H = A<B, 03H = A==B\nORG 2000H\n\nMVI A, 2AH\nMVI B, 30H\nCMP B\nJC LESS_THAN\nJZ EQUAL_TO\nMVI C, 01H\nJMP DONE\nLESS_THAN: MVI C, 02H\nJMP DONE\nEQUAL_TO: MVI C, 03H\nDONE: HLT\n")
+B.Ra=new A.dp("Stack Operations","Demonstrates PUSH and POP","; Push BC onto stack, then pop into DE\nORG 2000H\n\nLXI SP, 2400H\nMVI B, 12H\nMVI C, 34H\nPUSH B\nMVI B, 00H\nMVI C, 00H\nPOP D\nHLT\n")
+B.Rc=new A.dp("Copy Memory Block","Copies 8 bytes from 2100H to 2110H","; Copy bytes from source block (HL) to destination (DE)\nORG 2000H\n\nLXI H, 2100H\nLXI D, 2110H\nMVI B, 08H\nCOPY_LOOP: MOV A, M\nSTAX D\nINX H\nINX D\nDCR B\nJNZ COPY_LOOP\nHLT\n")
+B.R2=new A.dp("Binary to BCD","Converts binary to BCD format","; Convert value in A to decimal digits by repeated subtraction\n; Stores hundreds at 2200H, tens at 2201H, ones at 2202H\nORG 2000H\n\nMVI A, 99H\nMVI B, 00H\nMVI C, 00H\nHUND_LOOP: CPI 64H\nJC TENS_LOOP\nSUI 64H\nINR B\nJMP HUND_LOOP\nTENS_LOOP: CPI 0AH\nJC BCD_DONE\nSUI 0AH\nINR C\nJMP TENS_LOOP\nBCD_DONE: STA 2202H\nMOV A, C\nSTA 2201H\nMOV A, B\nSTA 2200H\nHLT\n")
+B.R6=new A.dp("Call Subroutine","Demonstrates CALL and RET","; Call a subroutine that adds B into A\nORG 2000H\n\nMVI A, 15H\nMVI B, 27H\nCALL ADD_SUB\nSTA 2300H\nHLT\n\nADD_SUB: ADD B\nRET\n")
+B.q_=s([B.QZ,B.QY,B.R3,B.R_,B.R1,B.R8,B.QX,B.R0,B.R9,B.R7,B.Rd,B.R4,B.R5,B.Rb,B.Ra,B.Rc,B.R2,B.R6],t.Xk)
 B.we=new A.h(0,2)
 B.D4=new A.cR(0.75,B.bD,B.nV,B.we,1.5)
 B.LB=s([B.D4],t.sq)
@@ -96869,16 +96869,16 @@ B.LI=s(["2800H..2801H = first 16-bit value","2802H..2803H = second 16-bit value"
 B.KC=s(["2804H..2805H = 16-bit sum","2806H = carry (00/01)"],t.s)
 B.a1_=new A.cl("2800H..2801H","1234H")
 B.a1f=new A.cl("2802H..2803H","0102H")
-B.pV=s([B.a1_,B.a1f],t.g)
+B.pU=s([B.a1_,B.a1f],t.g)
 B.a16=new A.cl("2804H..2805H","1336H")
 B.BZ=new A.cl("2806H","00H")
 B.Kq=s([B.a16,B.BZ],t.g)
-B.a2F=new A.j0(B.LI,B.KC,B.pV,B.Kq)
+B.a2F=new A.j0(B.LI,B.KC,B.pU,B.Kq)
 B.KG=s(["2800H..2801H = minuend","2802H..2803H = subtrahend"],t.s)
 B.Ku=s(["2804H..2805H = difference","2806H = borrow flag (00/01)"],t.s)
 B.a1g=new A.cl("2804H..2805H","1132H")
 B.LY=s([B.a1g,B.BZ],t.g)
-B.a2D=new A.j0(B.KG,B.Ku,B.pV,B.LY)
+B.a2D=new A.j0(B.KG,B.Ku,B.pU,B.LY)
 B.LJ=s(["2500H = multiplicand","2501H = multiplier"],t.s)
 B.L8=s(["2502H = product low byte","2503H = product high byte"],t.s)
 B.a1o=new A.cl("2500H","06H")
